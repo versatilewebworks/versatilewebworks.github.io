@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alex Mercer — UI Designer & Frontend Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0d0b;
+    --cream: #f5f0e8;
+    --warm: #f0e8d8;
+    --accent: #c8432a;
+    --accent2: #2a6fc8;
+    --muted: #8a8070;
+    --border: #d4c9b8;
+    --card-bg: #faf7f2;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.25s, height 0.25s;
+    mix-blend-mode: multiply;
+  }
+  body:has(a:hover) .cursor { width: 16px; height: 16px; background: var(--accent2); }
+  body:has(a:hover) .cursor-ring { width: 50px; height: 50px; border-color: var(--accent2); }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 3rem;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none; color: var(--ink);
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; color: var(--muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* SECTIONS */
+  section { padding: 6rem 3rem; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 60px;
+    height: 1px; background: var(--border);
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    padding-top: 8rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-text {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(100px, 18vw, 260px);
+    font-weight: 900; font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--border);
+    top: 50%; right: -2%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.6;
+  }
+  .hero-left { position: relative; z-index: 1; }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .hero-eyebrow::before { content: '→'; }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 900; line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem; color: var(--muted);
+    letter-spacing: 0.04em;
+    border-left: 2px solid var(--accent);
+    padding-left: 1rem;
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    background: var(--ink); color: var(--cream);
+    padding: 1rem 2.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; border: none; cursor: none;
+    transition: background 0.2s, transform 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .cta-btn:hover::before { transform: scaleX(1); }
+  .cta-btn span { position: relative; z-index: 1; }
+  .hero-right {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+  }
+  .hero-stat {
+    text-align: right;
+    border-right: 2px solid var(--border);
+    padding-right: 1.25rem;
+  }
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem; font-weight: 900;
+    line-height: 1; color: var(--ink);
+  }
+  .hero-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; color: var(--muted);
+    letter-spacing: 0.15em; text-transform: uppercase;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  }
+  .hero-scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+    animation: scrollLine 1.5s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.5); opacity: 0.3; }
+  }
+
+  /* WORK / PROJECTS */
+  #work { background: var(--warm); }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900; line-height: 1.05;
+    margin-bottom: 3.5rem;
+    max-width: 700px;
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2px;
+  }
+  .project-card {
+    background: var(--card-bg);
+    overflow: hidden;
+    transition: transform 0.3s;
+    position: relative;
+  }
+  .project-card:hover { transform: translateY(-4px); }
+  .project-thumb {
+    width: 100%; aspect-ratio: 16/10;
+    overflow: hidden; position: relative;
+  }
+  .project-thumb-inner {
+    width: 100%; height: 100%;
+    transition: transform 0.5s ease;
+  }
+  .project-card:hover .project-thumb-inner { transform: scale(1.04); }
+  /* Decorative placeholder thumbnails */
+  .thumb-1 { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+  .thumb-2 { background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%); }
+  .thumb-3 { background: linear-gradient(135deg, #c8432a 0%, #f7b731 100%); }
+  .thumb-4 { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
+  .thumb-inner-content {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .thumb-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 8px; padding: 20px; width: 100%;
+  }
+  .thumb-block {
+    height: 40px; border-radius: 4px;
+    background: rgba(255,255,255,0.1);
+  }
+  .thumb-block:first-child { grid-column: span 3; height: 80px; background: rgba(255,255,255,0.15); }
+  .thumb-block:nth-child(2) { height: 80px; }
+  .project-tag {
+    position: absolute; top: 1rem; left: 1rem;
+    background: var(--ink); color: var(--cream);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+  }
+  .project-body { padding: 1.75rem; }
+  .project-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .project-desc {
+    font-size: 0.88rem; color: var(--muted);
+    line-height: 1.65; margin-bottom: 1.5rem;
+  }
+  .project-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.6rem 1.1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; border: 1.5px solid var(--ink);
+    color: var(--ink); background: transparent;
+    transition: all 0.2s; cursor: none;
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--cream); }
+  .btn-filled {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.6rem 1.1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; border: 1.5px solid var(--accent);
+    color: var(--accent); background: transparent;
+    transition: all 0.2s; cursor: none;
+  }
+  .btn-filled:hover { background: var(--accent); color: #fff; }
+
+  /* ABOUT */
+  #about {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .about-portrait {
+    aspect-ratio: 3/4; max-height: 520px;
+    background: linear-gradient(160deg, var(--ink) 0%, #2a3a4a 100%);
+    position: relative; overflow: hidden;
+  }
+  .portrait-grid {
+    position: absolute; inset: 0;
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr); gap: 2px; padding: 2px;
+  }
+  .portrait-cell {
+    background: rgba(255,255,255,0.03);
+    transition: background 0.3s;
+  }
+  .portrait-cell:hover { background: rgba(200, 67, 42, 0.15); }
+  .portrait-name {
+    position: absolute; bottom: 1.5rem; left: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-style: italic;
+    color: rgba(255,255,255,0.5);
+  }
+  .about-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 900; line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+  .about-text h2 em { color: var(--accent); font-style: italic; }
+  .about-text p {
+    font-size: 1rem; color: #3a3530;
+    line-height: 1.85; margin-bottom: 1.25rem;
+  }
+  .about-text p:last-of-type { margin-bottom: 0; }
+
+  /* PRODUCTS */
+  #products { background: var(--ink); color: var(--cream); }
+  #products .section-label { color: rgba(255,255,255,0.35); }
+  #products .section-label::after { background: rgba(255,255,255,0.1); }
+  #products .section-title { color: var(--cream); }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5px; background: rgba(255,255,255,0.05);
+  }
+  .product-card {
+    background: var(--ink);
+    padding: 0;
+    overflow: hidden;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .product-card:hover { background: #1a1814; }
+  .product-preview {
+    width: 100%; aspect-ratio: 4/3;
+    overflow: hidden;
+  }
+  .prod-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  .prod-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+  .prod-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+  .product-preview-inner {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.4s;
+  }
+  .product-card:hover .product-preview-inner { transform: scale(1.05); }
+  .preview-mockup {
+    width: 80%; background: rgba(255,255,255,0.1);
+    border-radius: 6px; padding: 12px;
+    backdrop-filter: blur(4px);
+  }
+  .mockup-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.3); margin-bottom: 6px; }
+  .mockup-bar:nth-child(2) { width: 70%; }
+  .mockup-bar:nth-child(3) { width: 50%; }
+  .mockup-blocks { display: flex; gap: 6px; margin-top: 10px; }
+  .mockup-block { flex: 1; height: 40px; border-radius: 4px; background: rgba(255,255,255,0.2); }
+  .product-body { padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); }
+  .product-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 700;
+    color: var(--cream); margin-bottom: 0.4rem;
+  }
+  .product-desc { font-size: 0.83rem; color: rgba(255,255,255,0.45); line-height: 1.6; margin-bottom: 1.25rem; }
+  .product-footer { display: flex; align-items: center; justify-content: space-between; }
+  .product-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 900;
+    color: var(--cream);
+  }
+  .btn-gumroad {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.55rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; background: var(--accent);
+    color: #fff; border: none; cursor: none;
+    transition: background 0.2s;
+  }
+  .btn-gumroad:hover { background: #a83220; }
+
+  /* SKILLS */
+  #skills { border-top: 1px solid var(--border); }
+  .skills-container {
+    display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;
+  }
+  .skill-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem; letter-spacing: 0.08em;
+    padding: 0.75rem 1.5rem;
+    border: 1.5px solid var(--border);
+    color: var(--ink);
+    transition: all 0.25s; cursor: default;
+    position: relative; overflow: hidden;
+  }
+  .skill-pill::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--ink); transform: scaleY(0); transform-origin: bottom;
+    transition: transform 0.25s ease;
+  }
+  .skill-pill:hover::before { transform: scaleY(1); }
+  .skill-pill span { position: relative; z-index: 1; }
+  .skill-pill:hover span { color: var(--cream); }
+  .skills-marquee-wrap {
+    overflow: hidden; border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+  .skills-marquee {
+    display: flex; gap: 0;
+    animation: marquee 18s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem; font-weight: 900; font-style: italic;
+    color: transparent; -webkit-text-stroke: 1px var(--border);
+    padding: 0.5rem 2rem; white-space: nowrap;
+  }
+  .marquee-dot {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem; font-weight: 900;
+    color: var(--accent); padding: 0.5rem 0;
+    -webkit-text-stroke: 0;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* CONTACT */
+  #contact {
+    background: var(--ink); color: var(--cream);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+    min-height: 60vh;
+  }
+  #contact .section-label { color: rgba(255,255,255,0.3); }
+  #contact .section-label::after { background: rgba(255,255,255,0.1); }
+  .contact-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900; line-height: 1.05;
+    margin-top: 0.5rem;
+  }
+  .contact-headline em { color: var(--accent); font-style: italic; }
+  .contact-email {
+    display: block; margin-top: 2.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem; letter-spacing: 0.04em;
+    color: var(--cream); text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding-bottom: 0.75rem;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .contact-email:hover { color: var(--accent); border-color: var(--accent); }
+  .contact-right { padding-top: 2rem; }
+  .contact-right-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin-bottom: 1.5rem;
+  }
+  .social-links { display: flex; flex-direction: column; gap: 0.75rem; }
+  .social-link {
+    display: flex; align-items: center; justify-content: space-between;
+    text-decoration: none; color: var(--cream);
+    padding: 1rem 1.25rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    group: true;
+  }
+  .social-link:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.2);
+    padding-left: 1.5rem;
+  }
+  .social-link-name { font-weight: 500; }
+  .social-link-handle {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; color: rgba(255,255,255,0.35);
+  }
+  .social-link:hover .social-link-handle { color: var(--accent); }
+
+  footer {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    color: rgba(255,255,255,0.2);
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    section { padding: 4rem 1.5rem; }
+    #hero, #about, #contact { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-bg-text { display: none; }
+    .about-portrait { max-height: 320px; }
+    #contact { min-height: auto; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Alex Mercer</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#products">Templates</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-text">Design</div>
+  <div class="hero-left">
+    <p class="hero-eyebrow">Available for Projects</p>
+    <h1>Alex<br><em>Mercer</em></h1>
+    <p class="hero-title">Freelance UI Designer<br>& Frontend Developer</p>
+    <a href="#work" class="cta-btn"><span>View My Work ↓</span></a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat">
+      <div class="hero-stat-num">48+</div>
+      <div class="hero-stat-label">Projects Shipped</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">5yr</div>
+      <div class="hero-stat-label">Experience</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">12k</div>
+      <div class="hero-stat-label">Templates Sold</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- WORK / PROJECTS -->
+<section id="work">
+  <div class="section-label">Selected Work</div>
+  <h2 class="section-title">Projects that<br>move the needle.</h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-thumb">
+        <div class="project-thumb-inner thumb-1">
+          <div class="thumb-inner-content">
+            <div class="thumb-grid">
+              <div class="thumb-block"></div>
+              <div class="thumb-block"></div>
+              <div class="thumb-block" style="grid-column:span 2; background:rgba(255,255,255,0.08)"></div>
+              <div class="thumb-block"></div>
+              <div class="thumb-block" style="background:rgba(200,67,42,0.4)"></div>
+            </div>
+          </div>
+        </div>
+        <span class="project-tag">SaaS Dashboard</span>
+      </div>
+      <div class="project-body">
+        <h3 class="project-name">Orion Analytics</h3>
+        <p class="project-desc">A data-dense analytics dashboard for B2B SaaS teams — clean hierarchy, dark mode, fully componentised in Figma.</p>
+        <div class="project-btns">
+          <a href="https://dribbble.com" target="_blank" class="btn-outline">View Design →</a>
+          <a href="https://gumroad.com" target="_blank" class="btn-filled">Get Template ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-thumb">
+        <div class="project-thumb-inner thumb-2">
+          <div class="thumb-inner-content">
+            <div class="thumb-grid">
+              <div class="thumb-block" style="grid-column:span 4; background:rgba(255,255,255,0.12); height:50px;"></div>
+              <div class="thumb-block" style="grid-column:span 2; background:rgba(255,255,255,0.08); height:60px;"></div>
+              <div class="thumb-block" style="grid-column:span 2; height:60px;"></div>
+            </div>
+          </div>
+        </div>
+        <span class="project-tag">E-commerce</span>
+      </div>
+      <div class="project-body">
+        <h3 class="project-name">Verdant Shop</h3>
+        <p class="project-desc">A boutique e-commerce UI for a sustainable fashion brand. Earthy palette, editorial layouts, mobile-first.</p>
+        <div class="project-btns">
+          <a href="https://dribbble.com" target="_blank" class="btn-outline">View Design →</a>
+          <a href="https://gumroad.com" target="_blank" class="btn-filled">Get Template ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-thumb">
+        <div class="project-thumb-inner thumb-3">
+          <div class="thumb-inner-content">
+            <div class="thumb-grid">
+              <div class="thumb-block" style="background:rgba(255,255,255,0.2); height:70px; grid-column:span 2;"></div>
+              <div class="thumb-block" style="background:rgba(255,255,255,0.08); grid-column:span 2; height:70px;"></div>
+              <div class="thumb-block"></div>
+              <div class="thumb-block" style="background:rgba(255,255,255,0.15);"></div>
+            </div>
+          </div>
+        </div>
+        <span class="project-tag">Landing Page</span>
+      </div>
+      <div class="project-body">
+        <h3 class="project-name">Luminary AI</h3>
+        <p class="project-desc">High-conversion landing page for an AI startup. Bold type, animated sections, built in pure HTML/CSS/JS.</p>
+        <div class="project-btns">
+          <a href="https://dribbble.com" target="_blank" class="btn-outline">View Design →</a>
+          <a href="https://gumroad.com" target="_blank" class="btn-filled">Get Template ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-3">
+      <div class="project-thumb">
+        <div class="project-thumb-inner thumb-4">
+          <div class="thumb-inner-content">
+            <div class="thumb-grid">
+              <div class="thumb-block" style="grid-column:span 3; height:90px; background:rgba(255,255,255,0.06);"></div>
+              <div class="thumb-block" style="height:90px;"></div>
+              <div class="thumb-block" style="background:rgba(42,111,200,0.4);"></div>
+              <div class="thumb-block"></div>
+              <div class="thumb-block" style="grid-column:span 2; background:rgba(255,255,255,0.08);"></div>
+            </div>
+          </div>
+        </div>
+        <span class="project-tag">Mobile App</span>
+      </div>
+      <div class="project-body">
+        <h3 class="project-name">Solstice Wellness</h3>
+        <p class="project-desc">Meditation and habit tracking mobile app UI. Calm, breathable design with micro-animations throughout.</p>
+        <div class="project-btns">
+          <a href="https://dribbble.com" target="_blank" class="btn-outline">View Design →</a>
+          <a href="https://gumroad.com" target="_blank" class="btn-filled">Get Template ↗</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-portrait reveal">
+    <div class="portrait-grid" id="portraitGrid"></div>
+    <span class="portrait-name">Alex Mercer</span>
+  </div>
+  <div class="about-text">
+    <div class="section-label">About Me</div>
+    <h2>I design interfaces that<br><em>actually convert.</em></h2>
+    <p>I'm a freelance UI designer and frontend developer with five years of experience building digital products for startups and growing brands. My work lives at the intersection of beautiful design and clean, performant code.</p>
+    <p>I specialise in Figma-to-code workflows — designing in Figma, then bringing it to life with semantic HTML, modern CSS, and vanilla JavaScript (or React when the project calls for it).</p>
+    <p>My clients are founders, product teams, and agencies who want design that looks deliberate, converts visitors, and holds up under real-world conditions. I care about the details that make the difference between good and great.</p>
+  </div>
+</section>
+
+<!-- PRODUCTS / TEMPLATES -->
+<section id="products">
+  <div class="section-label">Templates & Products</div>
+  <h2 class="section-title">Ship faster with<br>production-ready kits.</h2>
+  <div class="products-grid">
+
+    <div class="product-card reveal">
+      <div class="product-preview prod-1">
+        <div class="product-preview-inner">
+          <div class="preview-mockup">
+            <div class="mockup-bar"></div>
+            <div class="mockup-bar"></div>
+            <div class="mockup-bar"></div>
+            <div class="mockup-blocks">
+              <div class="mockup-block"></div>
+              <div class="mockup-block"></div>
+              <div class="mockup-block"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-badge">Figma + HTML/CSS</div>
+        <h3 class="product-name">SaaS Dashboard Kit</h3>
+        <p class="product-desc">40+ screens, dark & light mode, data viz components, and full Figma variables.</p>
+        <div class="product-footer">
+          <span class="product-price">$49</span>
+          <a href="https://gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-preview prod-2">
+        <div class="product-preview-inner">
+          <div class="preview-mockup">
+            <div class="mockup-bar"></div>
+            <div class="mockup-bar"></div>
+            <div class="mockup-bar"></div>
+            <div class="mockup-blocks">
+              <div class="mockup-block"></div>
+              <div class="mockup-block"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-badge">Figma + React</div>
+        <h3 class="product-name">Startup Landing Page</h3>
+        <p class="product-desc">10 hero variants, pricing section, FAQ, and a fully responsive React component set.</p>
+        <div class="product-footer">
+          <span class="product-price">$29</span>
+          <a href="https://gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-delay-2">
+      <div class="product-preview prod-3">
+        <div class="product-preview-inner">
+          <div class="preview-mockup">
+            <div class="mockup-bar"></div>
+            <div class="mockup-bar"></div>
+            <div class="mockup-blocks">
+              <div class="mockup-block"></div>
+              <div class="mockup-block"></div>
+              <div class="mockup-block"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-badge">Figma Kit</div>
+        <h3 class="product-name">Mobile App UI Library</h3>
+        <p class="product-desc">200+ mobile components, iOS & Android specs, auto-layout ready with Figma tokens.</p>
+        <div class="product-footer">
+          <span class="product-price">$69</span>
+          <a href="https://gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Toolkit</div>
+  <h2 class="section-title" style="max-width:500px;">Tools of<br>the craft.</h2>
+  <div class="skills-container">
+    <div class="skill-pill"><span>HTML5</span></div>
+    <div class="skill-pill"><span>CSS3 / SCSS</span></div>
+    <div class="skill-pill"><span>JavaScript</span></div>
+    <div class="skill-pill"><span>React</span></div>
+    <div class="skill-pill"><span>UI Design</span></div>
+    <div class="skill-pill"><span>Figma</span></div>
+    <div class="skill-pill"><span>Motion / Animation</span></div>
+    <div class="skill-pill"><span>Design Systems</span></div>
+    <div class="skill-pill"><span>Responsive Design</span></div>
+    <div class="skill-pill"><span>Prototyping</span></div>
+  </div>
+  <div class="skills-marquee-wrap">
+    <div class="skills-marquee">
+      <span class="marquee-item">HTML</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">CSS</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">JavaScript</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">Figma</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">UI Design</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">React</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">HTML</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">CSS</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">JavaScript</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">Figma</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">UI Design</span><span class="marquee-dot"> · </span>
+      <span class="marquee-item">React</span><span class="marquee-dot"> · </span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div>
+    <div class="section-label">Get in Touch</div>
+    <h2 class="contact-headline">Let's build<br>something<br><em>great.</em></h2>
+    <a href="mailto:hello@alexmercer.co" class="contact-email">hello@alexmercer.co →</a>
+  </div>
+  <div class="contact-right reveal">
+    <p class="contact-right-label">Find me on</p>
+    <div class="social-links">
+      <a href="https://dribbble.com" target="_blank" class="social-link">
+        <span class="social-link-name">Dribbble</span>
+        <span class="social-link-handle">@alexmercer ↗</span>
+      </a>
+      <a href="https://twitter.com" target="_blank" class="social-link">
+        <span class="social-link-name">Twitter / X</span>
+        <span class="social-link-handle">@alexmercer ↗</span>
+      </a>
+      <a href="https://linkedin.com" target="_blank" class="social-link">
+        <span class="social-link-name">LinkedIn</span>
+        <span class="social-link-handle">in/alexmercer ↗</span>
+      </a>
+      <a href="https://github.com" target="_blank" class="social-link">
+        <span class="social-link-name">GitHub</span>
+        <span class="social-link-handle">@alexmercer ↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Alex Mercer. All rights reserved.</span>
+  <span>UI Designer & Frontend Developer</span>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // Portrait grid fill
+  const grid = document.getElementById('portraitGrid');
+  if (grid) {
+    for (let i = 0; i < 48; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'portrait-cell';
+      grid.appendChild(cell);
+    }
+  }
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Hero entrance
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('#hero .hero-left > *').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = `opacity 0.8s ${i * 0.15}s ease, transform 0.8s ${i * 0.15}s ease`;
+      setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'none'; }, 100);
+    });
+    document.querySelectorAll('#hero .hero-stat').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transition = `opacity 0.8s ${0.4 + i * 0.15}s ease`;
+      setTimeout(() => { el.style.opacity = '1'; }, 100);
+    });
+  });
+</script>
+</body>
+</html>
