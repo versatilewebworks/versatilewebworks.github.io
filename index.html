@@ -30,30 +30,28 @@
   }
 
   /* Custom cursor */
-  .cursor {
-    width: 10px; height: 10px;
-    background: var(--accent);
+  #cursor {
+    width: 12px; height: 12px;
+    background: #c8432a;
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
-    mix-blend-mode: multiply;
+    z-index: 99999;
+    top: -20px; left: -20px;
+    transition: width 0.15s, height 0.15s, background 0.15s;
+    display: block !important;
   }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1.5px solid var(--accent);
+  #cursorRing {
+    width: 38px; height: 38px;
+    border: 2px solid #c8432a;
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: transform 0.18s ease, width 0.25s, height 0.25s;
-    mix-blend-mode: multiply;
+    z-index: 99998;
+    top: -20px; left: -20px;
+    transition: width 0.2s, height 0.2s, border-color 0.2s;
+    display: block !important;
   }
-  body:has(a:hover) .cursor { width: 16px; height: 16px; background: var(--accent2); }
-  body:has(a:hover) .cursor-ring { width: 50px; height: 50px; border-color: var(--accent2); }
 
   /* NAV */
   nav {
@@ -538,6 +536,45 @@
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
+<script>
+(function() {
+  var dot  = document.getElementById('cursor');
+  var ring = document.getElementById('cursorRing');
+  var mouseX = -200, mouseY = -200;
+  var trailX  = -200, trailY  = -200;
+  var started = false;
+
+  function onMove(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  }
+
+  document.addEventListener('mousemove', onMove, { passive: true });
+
+  function tick() {
+    dot.style.left = (mouseX - 6) + 'px';
+    dot.style.top  = (mouseY - 6) + 'px';
+    trailX = trailX + (mouseX - trailX) * 0.13;
+    trailY = trailY + (mouseY - trailY) * 0.13;
+    ring.style.left = (trailX - 19) + 'px';
+    ring.style.top  = (trailY - 19) + 'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  // Hover effect
+  document.addEventListener('mouseover', function(e) {
+    var el = e.target.closest('a, button, .skill-pill, .project-card, .product-card');
+    if (el) {
+      dot.style.width = '18px'; dot.style.height = '18px'; dot.style.background = '#2a6fc8';
+      ring.style.width = '54px'; ring.style.height = '54px'; ring.style.borderColor = '#2a6fc8';
+    } else {
+      dot.style.width = '12px'; dot.style.height = '12px'; dot.style.background = '#c8432a';
+      ring.style.width = '38px'; ring.style.height = '38px'; ring.style.borderColor = '#c8432a';
+    }
+  });
+})();
+</script>
 
 <!-- NAV -->
 <nav>
@@ -585,7 +622,7 @@
   <h2 class="section-title">Projects that<br>move the needle.</h2>
   <div class="projects-grid">
 
-    <div class="project-card reveal">
+    <div class="project-card">
       <div class="project-thumb">
         <div class="project-thumb-inner thumb-1">
           <div class="thumb-inner-content">
@@ -610,7 +647,7 @@
       </div>
     </div>
 
-    <div class="project-card reveal reveal-delay-1">
+    <div class="project-card">
       <div class="project-thumb">
         <div class="project-thumb-inner thumb-2">
           <div class="thumb-inner-content">
@@ -633,7 +670,7 @@
       </div>
     </div>
 
-    <div class="project-card reveal reveal-delay-2">
+    <div class="project-card">
       <div class="project-thumb">
         <div class="project-thumb-inner thumb-3">
           <div class="thumb-inner-content">
@@ -657,7 +694,7 @@
       </div>
     </div>
 
-    <div class="project-card reveal reveal-delay-3">
+    <div class="project-card">
       <div class="project-thumb">
         <div class="project-thumb-inner thumb-4">
           <div class="thumb-inner-content">
@@ -687,7 +724,7 @@
 
 <!-- ABOUT -->
 <section id="about">
-  <div class="about-portrait reveal">
+  <div class="about-portrait">
     <div class="portrait-grid" id="portraitGrid"></div>
     <span class="portrait-name">Versatile Web Works</span>
   </div>
@@ -706,7 +743,7 @@
   <h2 class="section-title">Ship faster with<br>production-ready kits.</h2>
   <div class="products-grid">
 
-    <div class="product-card reveal">
+    <div class="product-card">
       <div class="product-preview prod-1">
         <div class="product-preview-inner">
           <div class="preview-mockup">
@@ -732,7 +769,7 @@
       </div>
     </div>
 
-    <div class="product-card reveal reveal-delay-1">
+    <div class="product-card">
       <div class="product-preview prod-2">
         <div class="product-preview-inner">
           <div class="preview-mockup">
@@ -757,7 +794,7 @@
       </div>
     </div>
 
-    <div class="product-card reveal reveal-delay-2">
+    <div class="product-card">
       <div class="product-preview prod-3">
         <div class="product-preview-inner">
           <div class="preview-mockup">
@@ -831,7 +868,7 @@
     <div class="social-links">
       <a href="https://dribbble.com" target="_blank" class="social-link">
         <span class="social-link-name">Dribbble</span>
-        <span class="social-link-handle">/versatilewebworks ↗</span>
+        <span class="social-link-handle">@versatilewebworks ↗</span>
       </a>
       <a href="https://twitter.com" target="_blank" class="social-link">
         <span class="social-link-name">Twitter / X</span>
@@ -859,18 +896,7 @@
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const cursorRing = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-  function animCursor() {
-    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-    cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
-    requestAnimationFrame(animCursor);
-  }
-  animCursor();
+  ─
 
   // Portrait grid fill
   const grid = document.getElementById('portraitGrid');
