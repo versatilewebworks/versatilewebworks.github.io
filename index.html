@@ -92,37 +92,16 @@
 
   /* HERO */
   #hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: end;
-    padding-top: 8rem;
-    padding-bottom: 4rem;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  
-    /* Background image */
-    background-image: url('hero-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+   min-height: 100vh;
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   align-items: end;
+   padding-top: 8rem;
+   padding-bottom: 4rem;
+   border-bottom: 1px solid var(--border);
+   position: relative;
+   overflow: hidden;
   }
-  #hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: inherit;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.02;
-    z-index: 0;
-  }
-  #hero > * {
-    position: relative;
-    z-index: 1;
-  } 
   .hero-bg-text {
     position: absolute;
     font-family: 'Playfair Display', serif;
