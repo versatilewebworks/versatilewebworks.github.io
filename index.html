@@ -29,55 +29,47 @@
     cursor: none;
   }
 
-  /* Custom cursor */
+  /* ── CURSOR ─────────────────────────────── */
   #cursor {
     width: 12px; height: 12px;
-    background: #c8432a;
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 99999;
-    top: -20px; left: -20px;
+    background: #c8432a; border-radius: 50%;
+    position: fixed; pointer-events: none;
+    z-index: 99999; top: -20px; left: -20px;
     transition: width 0.15s, height 0.15s, background 0.15s;
-    display: block !important;
   }
   #cursorRing {
     width: 38px; height: 38px;
-    border: 2px solid #c8432a;
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 99998;
-    top: -20px; left: -20px;
+    border: 2px solid #c8432a; border-radius: 50%;
+    position: fixed; pointer-events: none;
+    z-index: 99998; top: -20px; left: -20px;
     transition: width 0.2s, height 0.2s, border-color 0.2s;
-    display: block !important;
   }
 
-  /* NAV */
+  /* ── NAV ────────────────────────────────── */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
     display: flex; justify-content: space-between; align-items: center;
     padding: 1.25rem 3rem;
-    background: var(--cream);
-    border-bottom: 1px solid var(--border);
+    background: rgba(8,7,6,0.80);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
   .nav-logo {
     font-family: 'Playfair Display', serif;
     font-size: 1.1rem; font-weight: 700;
-    letter-spacing: 0.02em;
-    text-decoration: none; color: var(--ink);
+    text-decoration: none; color: var(--cream); letter-spacing: 0.02em;
   }
   .nav-links { display: flex; gap: 2rem; list-style: none; }
   .nav-links a {
     font-family: 'DM Mono', monospace;
     font-size: 0.72rem; font-weight: 500;
     letter-spacing: 0.12em; text-transform: uppercase;
-    text-decoration: none; color: var(--muted);
+    text-decoration: none; color: rgba(255,255,255,0.4);
     transition: color 0.2s;
   }
   .nav-links a:hover { color: var(--accent); }
 
-  /* SECTIONS */
+  /* ── SHARED ─────────────────────────────── */
   section { padding: 6rem 3rem; }
   .section-label {
     font-family: 'DM Mono', monospace;
@@ -89,34 +81,37 @@
     content: ''; flex: 1; max-width: 60px;
     height: 1px; background: var(--border);
   }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900; line-height: 1.05;
+    margin-bottom: 3.5rem; max-width: 700px;
+  }
 
-  /* HERO */
+  /* ── HERO — canvas animated background ──── */
   #hero {
-   min-height: 100vh;
-   display: grid;
-   grid-template-columns: 1fr 1fr;
-   align-items: end;
-   padding-top: 8rem;
-   padding-bottom: 4rem;
-   border-bottom: 1px solid var(--border);
-   position: relative;
-   overflow: hidden;
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: end;
+    padding-top: 8rem; padding-bottom: 4rem;
+    position: relative; overflow: hidden;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  #hero-canvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; z-index: 0;
   }
   .hero-bg-text {
-    position: absolute;
+    position: absolute; z-index: 2;
     font-family: 'Playfair Display', serif;
     font-size: clamp(100px, 18vw, 260px);
     font-weight: 900; font-style: italic;
     color: transparent;
-    -webkit-text-stroke: 1px var(--border);
-    top: 50%; right: -2%;
-    transform: translateY(-50%);
-    white-space: nowrap;
-    pointer-events: none;
-    user-select: none;
-    opacity: 0.6;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.05);
+    top: 50%; right: -2%; transform: translateY(-50%);
+    white-space: nowrap; pointer-events: none; user-select: none;
   }
-  .hero-left { position: relative; z-index: 1; }
+  .hero-left { position: relative; z-index: 3; }
   .hero-eyebrow {
     font-family: 'DM Mono', monospace;
     font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
@@ -128,167 +123,187 @@
     font-family: 'Playfair Display', serif;
     font-size: clamp(3.5rem, 7vw, 6.5rem);
     font-weight: 900; line-height: 0.95;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em; margin-bottom: 1.5rem; color: var(--cream);
   }
   h1 em { font-style: italic; color: var(--accent); }
   .hero-title {
     font-family: 'DM Mono', monospace;
-    font-size: 0.9rem; color: var(--muted);
+    font-size: 0.9rem; color: rgba(255,255,255,0.5);
     letter-spacing: 0.04em;
     border-left: 2px solid var(--accent);
-    padding-left: 1rem;
-    margin-bottom: 3rem;
-    line-height: 1.7;
+    padding-left: 1rem; margin-bottom: 3rem; line-height: 1.7;
   }
   .cta-btn {
     display: inline-flex; align-items: center; gap: 0.75rem;
-    background: var(--ink); color: var(--cream);
+    background: var(--accent); color: #fff;
     padding: 1rem 2.25rem;
     font-family: 'DM Mono', monospace;
     font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
-    text-decoration: none; border: none; cursor: none;
-    transition: background 0.2s, transform 0.2s;
-    position: relative; overflow: hidden;
+    text-decoration: none; cursor: none;
+    position: relative; overflow: hidden; transition: box-shadow 0.3s;
   }
   .cta-btn::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: var(--accent);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.3s ease;
+    content: ''; position: absolute; inset: 0;
+    background: #fff; transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s ease;
   }
   .cta-btn:hover::before { transform: scaleX(1); }
-  .cta-btn span { position: relative; z-index: 1; }
+  .cta-btn:hover { box-shadow: 0 8px 30px rgba(200,67,42,0.5); }
+  .cta-btn span { position: relative; z-index: 1; transition: color 0.35s; }
+  .cta-btn:hover span { color: var(--accent); }
   .hero-right {
-    position: relative; z-index: 1;
+    position: relative; z-index: 3;
     display: flex; flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end;
-    gap: 1.5rem;
-    padding-bottom: 1rem;
+    align-items: flex-end; justify-content: flex-end;
+    gap: 1.5rem; padding-bottom: 1rem;
   }
   .hero-stat {
     text-align: right;
-    border-right: 2px solid var(--border);
-    padding-right: 1.25rem;
+    border-right: 2px solid rgba(255,255,255,0.15); padding-right: 1.25rem;
   }
   .hero-stat-num {
     font-family: 'Playfair Display', serif;
-    font-size: 2.8rem; font-weight: 900;
-    line-height: 1; color: var(--ink);
+    font-size: 2.8rem; font-weight: 900; line-height: 1; color: var(--cream);
   }
   .hero-stat-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem; color: var(--muted);
+    font-size: 0.65rem; color: rgba(255,255,255,0.35);
     letter-spacing: 0.15em; text-transform: uppercase;
   }
   .hero-scroll {
     position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
     font-family: 'DM Mono', monospace; font-size: 0.6rem;
-    letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); z-index: 3;
   }
   .hero-scroll-line {
     width: 1px; height: 50px;
-    background: linear-gradient(to bottom, var(--muted), transparent);
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
     animation: scrollLine 1.5s ease-in-out infinite;
   }
   @keyframes scrollLine {
     0%, 100% { transform: scaleY(1); opacity: 1; }
-    50% { transform: scaleY(0.5); opacity: 0.3; }
+    50%       { transform: scaleY(0.5); opacity: 0.3; }
   }
 
-  /* WORK / PROJECTS */
+  /* ── WORK ACCORDION ─────────────────────── */
   #work { background: var(--warm); }
-  .section-title {
+
+  .accordion-list { border-top: 1px solid var(--border); }
+
+  .acc-item { border-bottom: 1px solid var(--border); }
+
+  .acc-trigger {
+    width: 100%; display: flex; align-items: center;
+    gap: 2rem; padding: 1.6rem 0;
+    background: transparent; border: none; cursor: none;
+    text-align: left; position: relative;
+  }
+  .acc-trigger:hover .acc-num { color: var(--accent); }
+  .acc-trigger:hover .acc-title { color: var(--accent); }
+
+  .acc-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.18em; color: var(--muted);
+    min-width: 2.5rem; transition: color 0.2s;
+  }
+  .acc-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 900; line-height: 1.05;
-    margin-bottom: 3.5rem;
-    max-width: 700px;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 700; line-height: 1; flex: 1;
+    transition: color 0.2s;
   }
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 2px;
+  .acc-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.75rem;
+    transition: border-color 0.2s, color 0.2s;
   }
-  .project-card {
-    background: var(--card-bg);
-    overflow: hidden;
-    transition: transform 0.3s;
-    position: relative;
-  }
-  .project-card:hover { transform: translateY(-4px); }
-  .project-thumb {
-    width: 100%; aspect-ratio: 16/10;
-    overflow: hidden; position: relative;
-  }
-  .project-thumb-inner {
-    width: 100%; height: 100%;
-    transition: transform 0.5s ease;
-  }
-  .project-card:hover .project-thumb-inner { transform: scale(1.04); }
-  /* Decorative placeholder thumbnails */
-  .thumb-1 { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
-  .thumb-2 { background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%); }
-  .thumb-3 { background: linear-gradient(135deg, #c8432a 0%, #f7b731 100%); }
-  .thumb-4 { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
-  .thumb-inner-content {
-    width: 100%; height: 100%;
+  .acc-item.is-open .acc-tag { border-color: var(--accent); color: var(--accent); }
+
+  .acc-icon {
+    width: 28px; height: 28px; flex-shrink: 0;
+    border: 1.5px solid var(--border); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
+    transition: background 0.25s, border-color 0.25s, transform 0.4s ease;
   }
-  .thumb-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 8px; padding: 20px; width: 100%;
+  .acc-icon svg { width: 10px; height: 10px; stroke: var(--ink); transition: stroke 0.25s; }
+  .acc-item.is-open .acc-icon {
+    background: var(--accent); border-color: var(--accent);
+    transform: rotate(45deg);
   }
-  .thumb-block {
-    height: 40px; border-radius: 4px;
-    background: rgba(255,255,255,0.1);
+  .acc-item.is-open .acc-icon svg { stroke: #fff; }
+
+  /* Panel */
+  .acc-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s cubic-bezier(0.4,0,0.2,1);
   }
-  .thumb-block:first-child { grid-column: span 3; height: 80px; background: rgba(255,255,255,0.15); }
-  .thumb-block:nth-child(2) { height: 80px; }
-  .project-tag {
+  .acc-item.is-open .acc-panel { grid-template-rows: 1fr; }
+  .acc-panel-inner { overflow: hidden; }
+
+  .acc-content {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; padding-bottom: 3rem; align-items: start;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.4s 0.15s ease, transform 0.4s 0.15s ease;
+  }
+  .acc-item.is-open .acc-content { opacity: 1; transform: translateY(0); }
+
+  .acc-img-wrap {
+    position: relative; aspect-ratio: 16/10; overflow: hidden;
+  }
+  .acc-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.55s ease;
+  }
+  .acc-item.is-open .acc-img-wrap img { transform: scale(1.03); }
+  .acc-img-tag {
     position: absolute; top: 1rem; left: 1rem;
     background: var(--ink); color: var(--cream);
     font-family: 'DM Mono', monospace;
-    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 0.3rem 0.6rem;
+    font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.28rem 0.6rem;
   }
-  .project-body { padding: 1.75rem; }
-  .project-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem; font-weight: 700;
-    margin-bottom: 0.5rem;
+
+  .acc-info { display: flex; flex-direction: column; justify-content: center; gap: 1.25rem; }
+  .acc-desc {
+    font-size: 0.95rem; color: #3a3530; line-height: 1.8;
   }
-  .project-desc {
-    font-size: 0.88rem; color: var(--muted);
-    line-height: 1.65; margin-bottom: 1.5rem;
-  }
-  .project-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .acc-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
+
   .btn-outline {
     display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.6rem 1.1rem;
+    padding: 0.65rem 1.2rem;
     font-family: 'DM Mono', monospace;
     font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
     text-decoration: none; border: 1.5px solid var(--ink);
     color: var(--ink); background: transparent;
-    transition: all 0.2s; cursor: none;
+    transition: background 0.2s, color 0.2s; cursor: none;
   }
   .btn-outline:hover { background: var(--ink); color: var(--cream); }
   .btn-filled {
     display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.6rem 1.1rem;
+    padding: 0.65rem 1.2rem;
     font-family: 'DM Mono', monospace;
     font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
     text-decoration: none; border: 1.5px solid var(--accent);
     color: var(--accent); background: transparent;
-    transition: all 0.2s; cursor: none;
+    transition: background 0.2s, color 0.2s; cursor: none;
   }
   .btn-filled:hover { background: var(--accent); color: #fff; }
 
-  /* ABOUT */
+  @media (max-width: 768px) {
+    .acc-content { grid-template-columns: 1fr; gap: 1.5rem; }
+    .acc-title { font-size: 1.2rem; }
+    .acc-tag { display: none; }
+  }
+
+  /* ── ABOUT ──────────────────────────────── */
   #about {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 5rem; align-items: center;
@@ -296,40 +311,50 @@
     border-bottom: 1px solid var(--border);
   }
   .about-portrait {
-    aspect-ratio: 3/4; max-height: 520px;
-    background: linear-gradient(160deg, var(--ink) 0%, #2a3a4a 100%);
+    aspect-ratio: 3/4; max-height: 540px;
     position: relative; overflow: hidden;
   }
-  .portrait-grid {
-    position: absolute; inset: 0;
-    display: grid; grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(8, 1fr); gap: 2px; padding: 2px;
+  .about-portrait img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.6s ease;
   }
-  .portrait-cell {
-    background: rgba(255,255,255,0.03);
-    transition: background 0.3s;
-  }
-  .portrait-cell:hover { background: rgba(200, 67, 42, 0.15); }
+  .about-portrait:hover img { transform: scale(1.04); }
   .portrait-name {
     position: absolute; bottom: 1.5rem; left: 1.5rem;
     font-family: 'Playfair Display', serif;
     font-size: 1.1rem; font-style: italic;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.9);
+    background: rgba(14,13,11,0.5);
+    padding: 0.3rem 0.85rem; backdrop-filter: blur(6px);
   }
+  .about-text { padding: 0.5rem 0; }
   .about-text h2 {
     font-family: 'Playfair Display', serif;
     font-size: clamp(2rem, 3.5vw, 3rem);
-    font-weight: 900; line-height: 1.1;
-    margin-bottom: 2rem;
+    font-weight: 900; line-height: 1.1; margin-bottom: 1.75rem;
   }
   .about-text h2 em { color: var(--accent); font-style: italic; }
   .about-text p {
-    font-size: 1rem; color: #3a3530;
-    line-height: 1.85; margin-bottom: 1.25rem;
+    font-size: 0.97rem; color: #3a3530;
+    line-height: 1.85; margin-bottom: 1.1rem;
   }
   .about-text p:last-of-type { margin-bottom: 0; }
+  .about-chips {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.75rem;
+  }
+  .about-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--border); color: var(--muted);
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .about-chip:hover {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(200,67,42,0.05);
+  }
 
-  /* PRODUCTS */
+  /* ── PRODUCTS ───────────────────────────── */
   #products { background: var(--ink); color: var(--cream); }
   #products .section-label { color: rgba(255,255,255,0.35); }
   #products .section-label::after { background: rgba(255,255,255,0.1); }
@@ -340,36 +365,24 @@
     gap: 1.5px; background: rgba(255,255,255,0.05);
   }
   .product-card {
-    background: var(--ink);
-    padding: 0;
-    overflow: hidden;
-    transition: background 0.2s;
-    position: relative;
+    background: var(--ink); overflow: hidden; position: relative;
+    transition: background 0.25s, transform 0.3s;
   }
-  .product-card:hover { background: #1a1814; }
+  .product-card:hover { background: #1c1915; transform: translateY(-4px); }
   .product-preview {
-    width: 100%; aspect-ratio: 4/3;
-    overflow: hidden;
+    width: 100%; aspect-ratio: 4/3; overflow: hidden; position: relative;
   }
-  .prod-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-  .prod-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-  .prod-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-  .product-preview-inner {
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.4s;
+  .product-preview img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.5s ease;
   }
-  .product-card:hover .product-preview-inner { transform: scale(1.05); }
-  .preview-mockup {
-    width: 80%; background: rgba(255,255,255,0.1);
-    border-radius: 6px; padding: 12px;
-    backdrop-filter: blur(4px);
+  .product-card:hover .product-preview img { transform: scale(1.07); }
+  .product-preview::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(200,67,42,0.2) 0%, transparent 55%);
+    opacity: 0; transition: opacity 0.35s ease;
   }
-  .mockup-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.3); margin-bottom: 6px; }
-  .mockup-bar:nth-child(2) { width: 70%; }
-  .mockup-bar:nth-child(3) { width: 50%; }
-  .mockup-blocks { display: flex; gap: 6px; margin-top: 10px; }
-  .mockup-block { flex: 1; height: 40px; border-radius: 4px; background: rgba(255,255,255,0.2); }
+  .product-card:hover .product-preview::after { opacity: 1; }
   .product-body { padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); }
   .product-badge {
     font-family: 'DM Mono', monospace;
@@ -379,14 +392,17 @@
   .product-name {
     font-family: 'Playfair Display', serif;
     font-size: 1.25rem; font-weight: 700;
-    color: var(--cream); margin-bottom: 0.4rem;
+    color: var(--cream); margin-bottom: 0.4rem; transition: color 0.2s;
   }
-  .product-desc { font-size: 0.83rem; color: rgba(255,255,255,0.45); line-height: 1.6; margin-bottom: 1.25rem; }
+  .product-card:hover .product-name { color: var(--accent); }
+  .product-desc {
+    font-size: 0.83rem; color: rgba(255,255,255,0.45);
+    line-height: 1.6; margin-bottom: 1.25rem;
+  }
   .product-footer { display: flex; align-items: center; justify-content: space-between; }
   .product-price {
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem; font-weight: 900;
-    color: var(--cream);
+    font-size: 1.5rem; font-weight: 900; color: var(--cream);
   }
   .btn-gumroad {
     display: inline-flex; align-items: center; gap: 0.4rem;
@@ -394,24 +410,20 @@
     font-family: 'DM Mono', monospace;
     font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
     text-decoration: none; background: var(--accent);
-    color: #fff; border: none; cursor: none;
-    transition: background 0.2s;
+    color: #fff; border: 1.5px solid var(--accent); cursor: none;
+    transition: background 0.2s, color 0.2s;
   }
-  .btn-gumroad:hover { background: #a83220; }
+  .btn-gumroad:hover { background: transparent; color: var(--accent); }
 
-  /* SKILLS */
+  /* ── SKILLS ─────────────────────────────── */
   #skills { border-top: 1px solid var(--border); }
-  .skills-container {
-    display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;
-  }
+  .skills-container { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
   .skill-pill {
     font-family: 'DM Mono', monospace;
     font-size: 0.8rem; letter-spacing: 0.08em;
     padding: 0.75rem 1.5rem;
-    border: 1.5px solid var(--border);
-    color: var(--ink);
-    transition: all 0.25s; cursor: default;
-    position: relative; overflow: hidden;
+    border: 1.5px solid var(--border); color: var(--ink);
+    transition: all 0.25s; cursor: default; position: relative; overflow: hidden;
   }
   .skill-pill::before {
     content: ''; position: absolute; inset: 0;
@@ -422,14 +434,13 @@
   .skill-pill span { position: relative; z-index: 1; }
   .skill-pill:hover span { color: var(--cream); }
   .skills-marquee-wrap {
-    overflow: hidden; border-top: 1px solid var(--border);
+    overflow: hidden; margin-top: 4rem;
+    border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    margin-top: 4rem;
   }
   .skills-marquee {
     display: flex; gap: 0;
-    animation: marquee 18s linear infinite;
-    width: max-content;
+    animation: marquee 18s linear infinite; width: max-content;
   }
   .marquee-item {
     font-family: 'Playfair Display', serif;
@@ -440,28 +451,25 @@
   .marquee-dot {
     font-family: 'Playfair Display', serif;
     font-size: 4.5rem; font-weight: 900;
-    color: var(--accent); padding: 0.5rem 0;
-    -webkit-text-stroke: 0;
+    color: var(--accent); padding: 0.5rem 0; -webkit-text-stroke: 0;
   }
   @keyframes marquee {
     from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    to   { transform: translateX(-50%); }
   }
 
-  /* CONTACT */
+  /* ── CONTACT ────────────────────────────── */
   #contact {
     background: var(--ink); color: var(--cream);
     display: grid; grid-template-columns: 1fr 1fr;
-    gap: 5rem; align-items: center;
-    min-height: 60vh;
+    gap: 5rem; align-items: center; min-height: 60vh;
   }
   #contact .section-label { color: rgba(255,255,255,0.3); }
   #contact .section-label::after { background: rgba(255,255,255,0.1); }
   .contact-headline {
     font-family: 'Playfair Display', serif;
     font-size: clamp(2.5rem, 5vw, 4.5rem);
-    font-weight: 900; line-height: 1.05;
-    margin-top: 0.5rem;
+    font-weight: 900; line-height: 1.05; margin-top: 0.5rem;
   }
   .contact-headline em { color: var(--accent); font-style: italic; }
   .contact-email {
@@ -469,8 +477,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 1rem; letter-spacing: 0.04em;
     color: var(--cream); text-decoration: none;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 0.75rem;
     transition: border-color 0.2s, color 0.2s;
   }
   .contact-email:hover { color: var(--accent); border-color: var(--accent); }
@@ -483,50 +490,40 @@
   .social-links { display: flex; flex-direction: column; gap: 0.75rem; }
   .social-link {
     display: flex; align-items: center; justify-content: space-between;
-    text-decoration: none; color: #ffffff;
+    text-decoration: none; color: #fff;
     padding: 1rem 1.25rem;
-    border: 1px solid rgba(255,255,255,0.3);
-    font-size: 0.9rem;
-    transition: all 0.2s;
+    border: 1px solid rgba(255,255,255,0.3); font-size: 0.9rem;
     background: rgba(255,255,255,0.05);
+    transition: background 0.2s, border-color 0.2s, padding-left 0.2s;
   }
   .social-link:hover {
     background: rgba(255,255,255,0.1);
-    border-color: var(--accent);
-    padding-left: 1.5rem;
-    color: #ffffff;
+    border-color: var(--accent); padding-left: 1.5rem;
   }
-  .social-link-name { font-weight: 500; color: #ffffff; }
+  .social-link-name { font-weight: 500; color: #fff; }
   .social-link-handle {
     font-family: 'DM Mono', monospace;
-    font-size: 0.75rem; color: rgba(255,255,255,0.65);
+    font-size: 0.75rem; color: rgba(255,255,255,0.65); transition: color 0.2s;
   }
   .social-link:hover .social-link-handle { color: var(--accent); }
 
+  /* ── FOOTER ─────────────────────────────── */
   footer {
     background: var(--ink);
     border-top: 1px solid rgba(255,255,255,0.06);
     padding: 1.5rem 3rem;
     display: flex; justify-content: space-between; align-items: center;
     color: rgba(255,255,255,0.2);
-    font-family: 'DM Mono', monospace; font-size: 0.65rem;
-    letter-spacing: 0.1em;
+    font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em;
   }
 
-  /* Scroll reveal */
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-
-  /* Responsive */
+  /* ── RESPONSIVE ─────────────────────────── */
   @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; }
     section { padding: 4rem 1.5rem; }
     #hero, #about, #contact { grid-template-columns: 1fr; gap: 3rem; }
     .hero-bg-text { display: none; }
-    .about-portrait { max-height: 320px; }
+    .about-portrait { max-height: 320px; aspect-ratio: 4/3; }
     #contact { min-height: auto; }
     footer { flex-direction: column; gap: 0.5rem; text-align: center; }
   }
@@ -534,46 +531,34 @@
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursorRing"></div>
 <script>
-(function() {
-  var dot  = document.getElementById('cursor');
+(function () {
+  var dot = document.getElementById('cursor');
   var ring = document.getElementById('cursorRing');
-  var mouseX = -200, mouseY = -200;
-  var trailX  = -200, trailY  = -200;
-  var started = false;
-
-  function onMove(e) {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  }
-
-  document.addEventListener('mousemove', onMove, { passive: true });
-
-  function tick() {
-    dot.style.left = (mouseX - 6) + 'px';
-    dot.style.top  = (mouseY - 6) + 'px';
-    trailX = trailX + (mouseX - trailX) * 0.13;
-    trailY = trailY + (mouseY - trailY) * 0.13;
-    ring.style.left = (trailX - 19) + 'px';
-    ring.style.top  = (trailY - 19) + 'px';
-    requestAnimationFrame(tick);
-  }
-  tick();
-
-  // Hover effect
-  document.addEventListener('mouseover', function(e) {
+  var mouseX = -200, mouseY = -200, trailX = -200, trailY = -200;
+  document.addEventListener('mousemove', function (e) {
+    mouseX = e.clientX; mouseY = e.clientY;
+  }, { passive: true });
+  document.addEventListener('mouseover', function (e) {
     var el = e.target.closest('a, button, .skill-pill, .project-card, .product-card');
     if (el) {
-      dot.style.width = '18px'; dot.style.height = '18px'; dot.style.background = '#2a6fc8';
-      ring.style.width = '54px'; ring.style.height = '54px'; ring.style.borderColor = '#2a6fc8';
+      dot.style.width='18px'; dot.style.height='18px'; dot.style.background='#2a6fc8';
+      ring.style.width='54px'; ring.style.height='54px'; ring.style.borderColor='#2a6fc8';
     } else {
-      dot.style.width = '12px'; dot.style.height = '12px'; dot.style.background = '#c8432a';
-      ring.style.width = '38px'; ring.style.height = '38px'; ring.style.borderColor = '#c8432a';
+      dot.style.width='12px'; dot.style.height='12px'; dot.style.background='#c8432a';
+      ring.style.width='38px'; ring.style.height='38px'; ring.style.borderColor='#c8432a';
     }
   });
-})();
+  (function tick() {
+    dot.style.left  = (mouseX - 6)  + 'px'; dot.style.top  = (mouseY - 6)  + 'px';
+    trailX += (mouseX - trailX) * 0.13;     trailY += (mouseY - trailY) * 0.13;
+    ring.style.left = (trailX - 19) + 'px'; ring.style.top = (trailY - 19) + 'px';
+    requestAnimationFrame(tick);
+  }());
+}());
 </script>
 
 <!-- NAV -->
@@ -583,17 +568,19 @@
     <li><a href="#work">Work</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#products">Templates</a></li>
+    <li><a href="#skills">Skills</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
+  <canvas id="hero-canvas"></canvas>
   <div class="hero-bg-text">Design</div>
   <div class="hero-left">
     <p class="hero-eyebrow">Available for Projects</p>
     <h1>Versatile<br><em>Web Works</em></h1>
-    <p class="hero-title">Freelance UI Designer<br>& Frontend Developer</p>
+    <p class="hero-title">Freelance UI Designer<br>&amp; Frontend Developer</p>
     <a href="#work" class="cta-btn"><span>View My Work ↓</span></a>
   </div>
   <div class="hero-right">
@@ -616,176 +603,364 @@
   </div>
 </section>
 
-<!-- WORK / PROJECTS -->
+<!-- Hero canvas animation -->
+<script>
+(function () {
+  var canvas = document.getElementById('hero-canvas');
+  var ctx = canvas.getContext('2d');
+
+  function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var orbs = [
+    { x:0.15, y:0.25, r:0.60, col:'20,14,10',   dx: 0.00020, dy: 0.00013 },
+    { x:0.75, y:0.65, r:0.55, col:'45,22,10',   dx:-0.00015, dy: 0.00011 },
+    { x:0.50, y:0.10, r:0.48, col:'200,67,42',  dx: 0.00012, dy: 0.00018 },
+    { x:0.85, y:0.35, r:0.42, col:'42,111,200', dx:-0.00013, dy:-0.00009 },
+    { x:0.30, y:0.80, r:0.38, col:'100,40,20',  dx: 0.00011, dy:-0.00014 },
+  ];
+
+  function draw() {
+    var W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#0b0908';
+    ctx.fillRect(0, 0, W, H);
+
+    orbs.forEach(function(o) {
+      o.x += o.dx; o.y += o.dy;
+      if (o.x < 0 || o.x > 1) o.dx *= -1;
+      if (o.y < 0 || o.y > 1) o.dy *= -1;
+      var cx = o.x * W, cy = o.y * H, rad = o.r * Math.max(W, H);
+      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+      g.addColorStop(0,   'rgba('+o.col+',0.22)');
+      g.addColorStop(0.5, 'rgba('+o.col+',0.08)');
+      g.addColorStop(1,   'rgba('+o.col+',0)');
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI*2); ctx.fill();
+    });
+    ctx.globalCompositeOperation = 'source-over';
+    requestAnimationFrame(draw);
+  }
+  draw();
+}());
+</script>
+
+<!-- WORK / ACCORDION -->
 <section id="work">
   <div class="section-label">Selected Work</div>
   <h2 class="section-title">Projects that<br>move the needle.</h2>
-  <div class="projects-grid">
 
-    <div class="project-card">
-     <div class="project-thumb">
-       <div class="project-thumb-inner thumb-1">
-         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" 
-              alt="Orion Analytics Dashboard" 
-              style="width:100%;height:100%;object-fit:cover;display:block;" />
-       </div>
-       <span class="project-tag">SaaS Dashboard</span>
-     </div>
-    </div>
+  <div class="accordion-list" id="workAccordion">
 
-    <div class="project-card">
-     <div class="project-thumb">
-       <div class="project-thumb-inner thumb-2">
-         <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&q=80" 
-              alt="Verdant Shop E-commerce" 
-              style="width:100%;height:100%;object-fit:cover;display:block;" />
-       </div>
-       <span class="project-tag">E-commerce</span>
-     </div>
-    </div>
-
-    <div class="project-card">
-     <div class="project-thumb">
-       <div class="project-thumb-inner thumb-3">
-         <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80" 
-              alt="Luminary AI Landing Page" 
-              style="width:100%;height:100%;object-fit:cover;display:block;" />
-       </div>
-       <span class="project-tag">Landing Page</span>
-     </div>
-    </div>
-
-    <div class="project-card">
-     <div class="project-thumb">
-       <div class="project-thumb-inner thumb-4">
-         <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&q=80" 
-              alt="Solstice Wellness App" 
-              style="width:100%;height:100%;object-fit:cover;display:block;" />
-       </div>
-       <span class="project-tag">Mobile App</span>
-     </div>
+    <!-- 01 -->
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="acc-num">01</span>
+        <span class="acc-title">Orion Analytics</span>
+        <span class="acc-tag">SaaS Dashboard</span>
+        <span class="acc-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke-width="1.5" stroke-linecap="round">
+            <line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/>
+          </svg>
+        </span>
+      </button>
+      <div class="acc-panel" role="region">
+        <div class="acc-panel-inner">
+          <div class="acc-content">
+            <div class="acc-img-wrap">
+              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80" alt="Orion Analytics" />
+              <span class="acc-img-tag">SaaS Dashboard</span>
+            </div>
+            <div class="acc-info">
+              <p class="acc-desc">A data-dense B2B analytics dashboard with dark mode, modular chart components, and a scalable Figma design system built to support rapid product iteration.</p>
+              <div class="acc-btns">
+                <a href="https://dribbble.com" target="_blank" class="btn-outline">Live Demo →</a>
+                <a href="https://versatilewebworks.gumroad.com" target="_blank" class="btn-filled">Buy on Gumroad ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="project-card">
-     <div class="project-thumb">
-       <div class="project-thumb-inner thumb-5">
-         <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80" 
-              alt="Luminary AI Landing Page" 
-              style="width:100%;height:100%;object-fit:cover;display:block;" />
-       </div>
-       <span class="project-tag">Landing Page</span>
-     </div>
+    <!-- 02 -->
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="acc-num">02</span>
+        <span class="acc-title">Verdant Shop</span>
+        <span class="acc-tag">E-commerce</span>
+        <span class="acc-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke-width="1.5" stroke-linecap="round">
+            <line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/>
+          </svg>
+        </span>
+      </button>
+      <div class="acc-panel" role="region">
+        <div class="acc-panel-inner">
+          <div class="acc-content">
+            <div class="acc-img-wrap">
+              <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=900&q=80" alt="Verdant Shop" />
+              <span class="acc-img-tag">E-commerce</span>
+            </div>
+            <div class="acc-info">
+              <p class="acc-desc">Boutique fashion storefront with editorial product layouts, size-guide overlays, and a mobile-first checkout flow engineered for maximum conversion.</p>
+              <div class="acc-btns">
+                <a href="https://dribbble.com" target="_blank" class="btn-outline">Live Demo →</a>
+                <a href="https://versatilewebworks.gumroad.com" target="_blank" class="btn-filled">Buy on Gumroad ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="project-card">
-     <div class="project-thumb">
-       <div class="project-thumb-inner thumb-6">
-         <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&q=80" 
-              alt="Solstice Wellness App" 
-              style="width:100%;height:100%;object-fit:cover;display:block;" />
-       </div>
-       <span class="project-tag">Mobile App</span>
-     </div>
+    <!-- 03 -->
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="acc-num">03</span>
+        <span class="acc-title">Luminary AI</span>
+        <span class="acc-tag">AI Landing Page</span>
+        <span class="acc-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke-width="1.5" stroke-linecap="round">
+            <line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/>
+          </svg>
+        </span>
+      </button>
+      <div class="acc-panel" role="region">
+        <div class="acc-panel-inner">
+          <div class="acc-content">
+            <div class="acc-img-wrap">
+              <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=900&q=80" alt="Luminary AI" />
+              <span class="acc-img-tag">AI Landing Page</span>
+            </div>
+            <div class="acc-info">
+              <p class="acc-desc">High-conversion landing page for an AI startup — bold hero typography, animated feature sections, and a scroll-triggered product demo that drives sign-ups.</p>
+              <div class="acc-btns">
+                <a href="https://dribbble.com" target="_blank" class="btn-outline">Live Demo →</a>
+                <a href="https://versatilewebworks.gumroad.com" target="_blank" class="btn-filled">Buy on Gumroad ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="project-card">
-     <div class="project-thumb">
-       <div class="project-thumb-inner thumb-7">
-         <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&q=80" 
-              alt="Solstice Wellness App" 
-              style="width:100%;height:100%;object-fit:cover;display:block;" />
-       </div>
-       <span class="project-tag">Mobile App</span>
-     </div>
+
+    <!-- 04 -->
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="acc-num">04</span>
+        <span class="acc-title">Solstice Wellness</span>
+        <span class="acc-tag">Mobile App UI</span>
+        <span class="acc-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke-width="1.5" stroke-linecap="round">
+            <line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/>
+          </svg>
+        </span>
+      </button>
+      <div class="acc-panel" role="region">
+        <div class="acc-panel-inner">
+          <div class="acc-content">
+            <div class="acc-img-wrap">
+              <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=900&q=80" alt="Solstice Wellness" />
+              <span class="acc-img-tag">Mobile App UI</span>
+            </div>
+            <div class="acc-info">
+              <p class="acc-desc">Meditation and habit tracker app UI — a calm visual language, custom micro-animations, and a complete iOS component kit in Figma ready to hand off.</p>
+              <div class="acc-btns">
+                <a href="https://dribbble.com" target="_blank" class="btn-outline">Live Demo →</a>
+                <a href="https://versatilewebworks.gumroad.com" target="_blank" class="btn-filled">Buy on Gumroad ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-   
+
+    <!-- 05 -->
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="acc-num">05</span>
+        <span class="acc-title">Nova Portfolio</span>
+        <span class="acc-tag">Portfolio Site</span>
+        <span class="acc-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke-width="1.5" stroke-linecap="round">
+            <line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/>
+          </svg>
+        </span>
+      </button>
+      <div class="acc-panel" role="region">
+        <div class="acc-panel-inner">
+          <div class="acc-content">
+            <div class="acc-img-wrap">
+              <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80" alt="Nova Portfolio" />
+              <span class="acc-img-tag">Portfolio Site</span>
+            </div>
+            <div class="acc-info">
+              <p class="acc-desc">Award-style personal portfolio in pure HTML/CSS/JS — smooth scroll reveals, a custom cursor trail, and staggered entrance animations that leave a lasting impression.</p>
+              <div class="acc-btns">
+                <a href="https://dribbble.com" target="_blank" class="btn-outline">Live Demo →</a>
+                <a href="https://versatilewebworks.gumroad.com" target="_blank" class="btn-filled">Buy on Gumroad ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 -->
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="acc-num">06</span>
+        <span class="acc-title">Pulseboard Finance</span>
+        <span class="acc-tag">Fintech Dashboard</span>
+        <span class="acc-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke-width="1.5" stroke-linecap="round">
+            <line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/>
+          </svg>
+        </span>
+      </button>
+      <div class="acc-panel" role="region">
+        <div class="acc-panel-inner">
+          <div class="acc-content">
+            <div class="acc-img-wrap">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80" alt="Pulseboard Finance" />
+              <span class="acc-img-tag">Fintech Dashboard</span>
+            </div>
+            <div class="acc-info">
+              <p class="acc-desc">Personal finance tracker with live graph widgets, budget allocation rings, and an accessible WCAG-AA-compliant colour system designed for daily use.</p>
+              <div class="acc-btns">
+                <a href="https://dribbble.com" target="_blank" class="btn-outline">Live Demo →</a>
+                <a href="https://versatilewebworks.gumroad.com" target="_blank" class="btn-filled">Buy on Gumroad ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
+<script>
+(function () {
+  var accordion = document.getElementById('workAccordion');
+  if (!accordion) return;
+
+  accordion.addEventListener('click', function (e) {
+    var trigger = e.target.closest('.acc-trigger');
+    if (!trigger) return;
+
+    var item = trigger.closest('.acc-item');
+    var isOpen = item.classList.contains('is-open');
+
+    // Close all
+    accordion.querySelectorAll('.acc-item.is-open').forEach(function (openItem) {
+      openItem.classList.remove('is-open');
+      openItem.querySelector('.acc-trigger').setAttribute('aria-expanded', 'false');
+    });
+
+    // Open clicked (if it was closed)
+    if (!isOpen) {
+      item.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+  });
+}());
+</script>
+
 <!-- ABOUT -->
 <section id="about">
- <div class="about-portrait">
-   <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" 
-        alt="Versatile Web Works" 
-        style="width:100%;height:100%;object-fit:cover;display:block;" />
-   <span class="portrait-name">Versatile Web Works</span>
- </div>
+  <div class="about-portrait">
+    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Versatile Web Works" />
+    <span class="portrait-name">Versatile Web Works</span>
+  </div>
+  <div class="about-text">
+    <div class="section-label">About</div>
+    <h2>Crafting interfaces that<br>feel as good as they <em>look.</em></h2>
+    <p>I'm a freelance UI/UX designer and frontend developer with over two years of hands-on experience turning complex product requirements into clean, intuitive digital experiences. My work lives precisely at the intersection of visual design and functional code — I don't just hand off mockups, I build them.</p>
+    <p>Specialising in Figma-to-code workflows, I design fully componentised systems in Figma — complete with variables, auto-layout, and interactive prototypes — then bring them to life with semantic HTML, modern CSS, and JavaScript. Every pixel is intentional, every interaction considered.</p>
+    <p>My clients are early-stage founders, growing SaaS teams, and agencies who need design that converts visitors, retains users, and scales gracefully. I care about accessibility, performance, and the tiny details that separate a good product from one people genuinely love to use.</p>
+    <div class="about-chips">
+      <span class="about-chip">UI Design</span>
+      <span class="about-chip">UX Research</span>
+      <span class="about-chip">Figma</span>
+      <span class="about-chip">HTML / CSS</span>
+      <span class="about-chip">JavaScript</span>
+      <span class="about-chip">React</span>
+      <span class="about-chip">Design Systems</span>
+      <span class="about-chip">Prototyping</span>
+    </div>
+  </div>
 </section>
 
 <!-- PRODUCTS / TEMPLATES -->
 <section id="products">
-  <div class="section-label">Templates & Products</div>
+  <div class="section-label">Templates &amp; Products</div>
   <h2 class="section-title">Ship faster with<br>production-ready kits.</h2>
   <div class="products-grid">
 
     <div class="product-card">
-      <div class="product-preview prod-1">
-        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" 
-             alt="SaaS Dashboard Kit" 
-             style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;" />
+      <div class="product-preview">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="SaaS Dashboard Kit" />
       </div>
-     <div class="product-body">
+      <div class="product-body">
         <div class="product-badge">Figma + HTML/CSS</div>
         <h3 class="product-name">SaaS Dashboard Kit</h3>
-        <p class="product-desc">40+ screens, dark & light mode, data viz components, and full Figma variables.</p>
+        <p class="product-desc">40+ screens with dark &amp; light modes, data-viz components, and full Figma variable support for one-click theming.</p>
         <div class="product-footer">
           <span class="product-price">$49</span>
-          <a href="https://gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
+          <a href="https://versatilewebworks.gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
         </div>
       </div>
     </div>
 
     <div class="product-card">
-     <div class="product-preview prod-2">
-       <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" 
-            alt="Startup Landing Page" 
-            style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;" />
-     </div>
-     <div class="product-body">
+      <div class="product-preview">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80" alt="Startup Landing Page Kit" />
+      </div>
+      <div class="product-body">
         <div class="product-badge">Figma + React</div>
         <h3 class="product-name">Startup Landing Page</h3>
-        <p class="product-desc">10 hero variants, pricing section, FAQ, and a fully responsive React component set.</p>
+        <p class="product-desc">10 hero variants, animated feature grid, pricing table, and FAQ accordion — a fully responsive React component set.</p>
         <div class="product-footer">
           <span class="product-price">$29</span>
-          <a href="https://gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
+          <a href="https://versatilewebworks.gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
         </div>
       </div>
     </div>
 
     <div class="product-card">
-     <div class="product-preview prod-3">
-       <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" 
-            alt="Mobile App UI Library" 
-            style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;" />
-     </div>
-     <div class="product-body">
+      <div class="product-preview">
+        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80" alt="Mobile App UI Library" />
+      </div>
+      <div class="product-body">
         <div class="product-badge">Figma Kit</div>
         <h3 class="product-name">Mobile App UI Library</h3>
-        <p class="product-desc">200+ mobile components, iOS & Android specs, auto-layout ready with Figma tokens.</p>
+        <p class="product-desc">200+ mobile components with iOS &amp; Android specs, auto-layout, Figma tokens, and a built-in dark mode toggle.</p>
         <div class="product-footer">
           <span class="product-price">$69</span>
-          <a href="https://gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
+          <a href="https://versatilewebworks.gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
         </div>
       </div>
     </div>
 
     <div class="product-card">
-     <div class="product-preview prod-4">
-       <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" 
-            alt="Mobile App UI Library" 
-            style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;" />
-     </div>
-     <div class="product-body">
-        <div class="product-badge">Figma Kit</div>
-        <h3 class="product-name">Mobile App UI Library</h3>
-        <p class="product-desc">200+ mobile components, iOS & Android specs, auto-layout ready with Figma tokens.</p>
+      <div class="product-preview">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Fintech UI Kit" />
+      </div>
+      <div class="product-body">
+        <div class="product-badge">Figma + HTML/CSS</div>
+        <h3 class="product-name">Fintech UI Kit</h3>
+        <p class="product-desc">Chart widgets, transaction lists, balance cards, and KPI panels — everything to build a polished financial product fast.</p>
         <div class="product-footer">
-          <span class="product-price">$69</span>
-          <a href="https://gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
+          <span class="product-price">$55</span>
+          <a href="https://versatilewebworks.gumroad.com" target="_blank" class="btn-gumroad">Buy on Gumroad ↗</a>
         </div>
       </div>
     </div>
 
-   
   </div>
 </section>
 
@@ -828,7 +1003,7 @@
   <div>
     <div class="section-label">Get in Touch</div>
     <h2 class="contact-headline">Let's build<br>something<br><em>great.</em></h2>
-    <a href="/cdn-cgi/l/email-protection#4e262b2222210e2f222b36232b3c2d2b3c602d21" class="contact-email"><span class="__cf_email__" data-cfemail="1078757c7c7f50717c75687d75627375623e737f">[email&#160;protected]</span> →</a>
+    <a href="/cdn-cgi/l/email-protection#7018151c1c1f30061502031104191c15071512071f021b035e131f1d" class="contact-email"><span class="__cf_email__" data-cfemail="4028252c2c2f00362532332134292c25372522372f322b336e232f2d">[email&#160;protected]</span> →</a>
   </div>
   <div class="contact-right">
     <p class="contact-right-label">Find me on</p>
@@ -849,7 +1024,7 @@
         <span class="social-link-name">Behance</span>
         <span class="social-link-handle">be/versatilewebworks ↗</span>
       </a>
-      <a href="https://webversatile.gumroad.com" target="_blank" class="social-link">
+      <a href="https://versatilewebworks.gumroad.com" target="_blank" class="social-link">
         <span class="social-link-name">Gumroad</span>
         <span class="social-link-handle">versatilewebworks.gumroad.com ↗</span>
       </a>
@@ -857,37 +1032,4 @@
   </div>
 </section>
 
-<footer>
-  <span>© 2026 Versatile Web Works. All rights reserved.</span>
-  <span>UI Designer & Frontend Developer</span>
-</footer>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  ─
-
-  // Portrait grid fill
-  const grid = document.getElementById('portraitGrid');
-  if (grid) {
-    for (let i = 0; i < 48; i++) {
-      const cell = document.createElement('div');
-      cell.className = 'portrait-cell';
-      grid.appendChild(cell);
-    }
-  }
-
-  // Scroll reveal
-  const revealEls = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => observer.observe(el));
-
-  // Hero entrance
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('#hero .hero-left > *').forEach((el, i) => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-      el.style.transition = `opacity 0.8s ${i * 0.15}s ease, transform 0.8s ${i * 0.15}s ease`;
-      setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'none'; }, 100);
-    });
-    document.querySelect
+<f
