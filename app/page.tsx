@@ -41,6 +41,7 @@ export default function Home() {
   const [sourceText, setSourceText] = useState('');
   const [typingText, setTypingText] = useState('');
   const [listenWhileTyping, setListenWhileTyping] = useState(false);
+  const [allowPaste, setAllowPaste] = useState(false);
   const [mistakes, setMistakes] = useState(0);
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
@@ -102,7 +103,7 @@ export default function Home() {
   }, [typingText, sourceText]);
 
   const handleGenerate = () => {
-    setSourceText(getRandomText(language));
+    setSourceText(getRandomText(language).slice(0, 300));
     setTypingText('');
     setCompleted(false);
     setMistakes(0);
@@ -176,8 +177,29 @@ export default function Home() {
     speak(sourceText, language);
   };
 
-  const handlePasteBlock = (event: React.ClipboardEvent) => {
+  const handleTypingPaste = (event: React.ClipboardEvent) => {
+    // Always block paste into the typing trainer so users type manually
     event.preventDefault();
+  };
+
+  const handleSourcePaste = (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    // If paste is disabled, block it. If enabled, insert up to 300 characters.
+    if (!allowPaste) {
+      event.preventDefault();
+      return;
+    }
+
+    event.preventDefault();
+    const paste = event.clipboardData.getData('text');
+    const el = event.target as HTMLTextAreaElement;
+    const start = el.selectionStart ?? sourceText.length;
+    const end = el.selectionEnd ?? sourceText.length;
+    const before = sourceText.slice(0, start);
+    const after = sourceText.slice(end);
+    const allowed = Math.max(0, 300 - (before.length + after.length));
+    const insert = paste.slice(0, allowed);
+    const newText = (before + insert + after).slice(0, 300);
+    setSourceText(newText);
   };
 
   return (
@@ -220,13 +242,17 @@ export default function Home() {
                 Practice text
                 <textarea
                   value={sourceText}
-                  onChange={(event) => setSourceText(event.target.value)}
-                  onPaste={handlePasteBlock}
+                  onChange={(event) => setSourceText(event.target.value.slice(0, 300))}
+                  onPaste={handleSourcePaste}
                   rows={6}
+                  maxLength={300}
                   className="min-h-[10rem] rounded-3xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-900 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
-                  placeholder="Type or generate text to practice. Paste is disabled for honest training."
+                  placeholder="Type or generate text to practice (max 300 chars)."
                 />
-                <p className="text-xs text-slate-500">Paste is blocked so your practice remains intentional.</p>
+                <div className="mt-2 flex items-center justify-between">
+                  <p className="text-xs text-slate-500">You may paste text when "Allow paste" is enabled.</p>
+                  <p className="text-xs text-slate-500">{sourceText.length}/300</p>
+                </div>
               </label>
 
               <div className="grid gap-3 sm:grid-cols-2">
@@ -245,7 +271,6 @@ export default function Home() {
                   Listen to text
                 </button>
               </div>
-
               <label className="flex items-center gap-3 rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-700">
                 <input
                   type="checkbox"
@@ -254,6 +279,16 @@ export default function Home() {
                   className="h-5 w-5 rounded-lg border-slate-300 text-sky-600 focus:ring-sky-500"
                 />
                 Practice while listening automatically
+              </label>
+
+              <label className="flex items-center gap-3 rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                <input
+                  type="checkbox"
+                  checked={allowPaste}
+                  onChange={(event) => setAllowPaste(event.target.checked)}
+                  className="h-5 w-5 rounded-lg border-slate-300 text-sky-600 focus:ring-sky-500"
+                />
+                Allow paste into practice text
               </label>
             </div>
           </section>
@@ -272,8 +307,9 @@ export default function Home() {
               <textarea
                 value={typingText}
                 onChange={handleTypingChange}
-                onPaste={handlePasteBlock}
+                  onPaste={handleTypingPaste}
                 rows={6}
+                  maxLength={300}
                 className="min-h-[10rem] rounded-3xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-900 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
                 placeholder="Begin typing the practice text in this box."
               />
