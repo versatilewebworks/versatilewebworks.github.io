@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Stenotypist Practice | Versatile WebWorks',
-  description: 'Mobile-first, serverless typing practice for stenotypists powered by Next.js and Tailwind CSS.',
+  title: 'Versatile WebWorks | Productivity Utilities',
+  description: 'Versatile WebWorks delivers polished web utilities and productivity tools for modern professionals.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
