@@ -42,6 +42,11 @@ export default function Home() {
   const [typingText, setTypingText] = useState('');
   const [listenWhileTyping, setListenWhileTyping] = useState(false);
   const [allowPaste, setAllowPaste] = useState(false);
+  const [category, setCategory] = useState<'business'|'technology'|'sports'>('technology');
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [selectedVoice, setSelectedVoice] = useState<string | null>(null);
+  const [rate, setRate] = useState(1);
+  const [pitch, setPitch] = useState(1);
   const [mistakes, setMistakes] = useState(0);
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
@@ -74,6 +79,24 @@ export default function Home() {
   }, [completed]);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    const load = () => {
+      const v = window.speechSynthesis.getVoices();
+      setVoices(v);
+      if (v.length && !selectedVoice) setSelectedVoice(v[0].name);
+    };
+    load();
+    window.speechSynthesis.onvoiceschanged = load;
+    return () => {
+      try {
+        // clear handler
+        // @ts-ignore
+        window.speechSynthesis.onvoiceschanged = null;
+      } catch {}
+    };
+  }, [selectedVoice]);
+
+  useEffect(() => {
     if (!typingText || !sourceText) {
       setAccuracy(100);
       setWpm(0);
@@ -102,8 +125,20 @@ export default function Home() {
     }
   }, [typingText, sourceText]);
 
-  const handleGenerate = () => {
-    setSourceText(getRandomText(language).slice(0, 300));
+  const handleGenerate = async () => {
+    // Try server-side fetch for latest news snippet, fall back to built-in samples
+    try {
+      const res = await fetch(`/api/generate?category=${encodeURIComponent(category)}`);
+      if (res.ok) {
+        const json = await res.json();
+        setSourceText((json.text || getRandomText(language)).slice(0, 500));
+      } else {
+        setSourceText(getRandomText(language).slice(0, 500));
+      }
+    } catch (e) {
+      setSourceText(getRandomText(language).slice(0, 500));
+    }
+
     setTypingText('');
     setCompleted(false);
     setMistakes(0);
@@ -143,8 +178,12 @@ export default function Home() {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
-    utterance.rate = 1;
-    utterance.pitch = 1;
+    utterance.rate = rate;
+    utterance.pitch = pitch;
+    if (selectedVoice) {
+      const v = voices.find((x) => x.name === selectedVoice || x.voiceURI === selectedVoice);
+      if (v) utterance.voice = v;
+    }
     window.speechSynthesis.speak(utterance);
   };
 
@@ -183,7 +222,7 @@ export default function Home() {
   };
 
   const handleSourcePaste = (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    // If paste is disabled, block it. If enabled, insert up to 300 characters.
+    // If paste is disabled, block it. If enabled, insert up to 500 characters.
     if (!allowPaste) {
       event.preventDefault();
       return;
@@ -196,9 +235,9 @@ export default function Home() {
     const end = el.selectionEnd ?? sourceText.length;
     const before = sourceText.slice(0, start);
     const after = sourceText.slice(end);
-    const allowed = Math.max(0, 300 - (before.length + after.length));
+    const allowed = Math.max(0, 500 - (before.length + after.length));
     const insert = paste.slice(0, allowed);
-    const newText = (before + insert + after).slice(0, 300);
+    const newText = (before + insert + after).slice(0, 500);
     setSourceText(newText);
   };
 
@@ -239,19 +278,32 @@ export default function Home() {
               </label>
 
               <label className="grid gap-2 text-sm font-medium text-slate-700">
+                Source
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value as any)}
+                  className="rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
+                >
+                  <option value="business">Business</option>
+                  <option value="technology">Technology</option>
+                  <option value="sports">Sports</option>
+                </select>
+              </label>
+
+              <label className="grid gap-2 text-sm font-medium text-slate-700">
                 Practice text
                 <textarea
                   value={sourceText}
-                  onChange={(event) => setSourceText(event.target.value.slice(0, 300))}
+                  onChange={(event) => setSourceText(event.target.value.slice(0, 500))}
                   onPaste={handleSourcePaste}
                   rows={6}
-                  maxLength={300}
+                  maxLength={500}
                   className="min-h-[10rem] rounded-3xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-900 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
-                  placeholder="Type or generate text to practice (max 300 chars)."
+                  placeholder="Type or generate text to practice (max 500 chars)."
                 />
                 <div className="mt-2 flex items-center justify-between">
                   <p className="text-xs text-slate-500">You may paste text when "Allow paste" is enabled.</p>
-                  <p className="text-xs text-slate-500">{sourceText.length}/300</p>
+                  <p className="text-xs text-slate-500">{sourceText.length}/500</p>
                 </div>
               </label>
 
@@ -263,13 +315,56 @@ export default function Home() {
                 >
                   Generate practice text
                 </button>
-                <button
-                  type="button"
-                  onClick={handlePlay}
-                  className="rounded-3xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
-                >
-                  Listen to text
-                </button>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handlePlay}
+                      className="rounded-3xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
+                    >
+                      Listen to text
+                    </button>
+                    <select
+                      value={selectedVoice ?? ''}
+                      onChange={(e) => setSelectedVoice(e.target.value || null)}
+                      className="rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none"
+                    >
+                      <option value="">Default voice</option>
+                      {voices.map((v) => (
+                        <option key={v.voiceURI || v.name} value={v.name}>{v.name} {v.lang}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs text-slate-600">Speed</label>
+                    <input
+                      type="range"
+                      min="0.5"
+                      max="2"
+                      step="0.1"
+                      value={rate}
+                      onChange={(e) => setRate(Number(e.target.value))}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{rate.toFixed(1)}x</span>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs text-slate-600">Pitch</label>
+                    <input
+                      type="range"
+                      min="0.5"
+                      max="2"
+                      step="0.1"
+                      value={pitch}
+                      onChange={(e) => setPitch(Number(e.target.value))}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{pitch.toFixed(1)}</span>
+                  </div>
+                </div>
               </div>
               <label className="flex items-center gap-3 rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-700">
                 <input
@@ -309,7 +404,7 @@ export default function Home() {
                 onChange={handleTypingChange}
                   onPaste={handleTypingPaste}
                 rows={6}
-                  maxLength={300}
+                  maxLength={500}
                 className="min-h-[10rem] rounded-3xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-900 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
                 placeholder="Begin typing the practice text in this box."
               />
