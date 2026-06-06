@@ -454,7 +454,6 @@ export default function Home() {
             <li>3. Enable automatic listening to hear the passage as you type.</li>
             <li>4. Track speed, accuracy, elapsed time, and mistakes in real time.</li>
           </ul>
-          <p className="mt-5 text-sm text-slate-500">This studio is production-ready for modern hosting platforms like Vercel and can be integrated into your company utility portal.</p>
         </section>
       </div>
     </main>

@@ -8,7 +8,6 @@ import { getFirebaseAuth, googleProvider } from '../lib/firebase';
 export default function AuthHeader() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const auth = getFirebaseAuth();
@@ -26,17 +25,16 @@ export default function AuthHeader() {
   const handleSignIn = async () => {
     const auth = getFirebaseAuth();
     if (!auth) {
-      setError('Firebase is not configured. Please add your Firebase settings to .env.local.');
+      console.error('Firebase is not configured. Please add your Firebase settings to .env.local.');
       return;
     }
 
     setLoading(true);
-    setError(null);
 
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (err: any) {
-      setError(err?.message ?? 'Unable to sign in with Google.');
+      console.error(err?.message ?? 'Unable to sign in with Google.');
     } finally {
       setLoading(false);
     }
@@ -49,12 +47,11 @@ export default function AuthHeader() {
     }
 
     setLoading(true);
-    setError(null);
 
     try {
       await signOut(auth);
     } catch (err: any) {
-      setError(err?.message ?? 'Unable to sign out.');
+      console.error(err?.message ?? 'Unable to sign out.');
     } finally {
       setLoading(false);
     }
@@ -69,17 +66,10 @@ export default function AuthHeader() {
           </Link>
           {user ? (
             <span className="text-sm text-slate-600">Signed in as {user.displayName ?? user.email}</span>
-          ) : (
-            <span className="text-sm text-slate-600">Sign in with Google to access all utilities.</span>
-          )}
+          ) : null}
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          {error ? (
-            <span className="rounded-full bg-rose-50 px-3 py-2 text-sm font-medium text-rose-700">
-              {error}
-            </span>
-          ) : null}
           <button
             type="button"
             onClick={user ? handleSignOut : handleSignIn}
