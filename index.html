@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stenotypist Practice | Versatile WebWorks</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Versatile WebWorks</p>
+          <h1>Stenotypist Practice</h1>
+          <p class="intro">
+            Practice typing with a mobile-first serverless trainer. Select your language, generate practice text, listen to it, and improve speed and accuracy.
+          </p>
+        </div>
+      </header>
+
+      <main class="app-grid">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Practice Setup</h2>
+            <span class="badge">Mobile-first</span>
+          </div>
+
+          <label class="field-group">
+            <span>Language</span>
+            <select id="languageSelect" aria-label="Select practice language">
+              <option value="en-US">English</option>
+              <option value="es-ES">Spanish</option>
+              <option value="fr-FR">French</option>
+              <option value="de-DE">German</option>
+            </select>
+          </label>
+
+          <label class="field-group">
+            <span>Practice text</span>
+            <textarea id="sourceText" placeholder="Type a sentence here or generate practice text." rows="6" onpaste="return false" ondrop="return false" aria-label="Practice text area"></textarea>
+            <small>Paste is disabled to keep practice fair. Use the button below to generate built-in text.</small>
+          </label>
+
+          <div class="button-row">
+            <button id="generateButton" type="button">Generate AI practice text</button>
+            <button id="playButton" type="button">Listen to text</button>
+          </div>
+
+          <label class="checkbox-group">
+            <input id="listenWhileTyping" type="checkbox" />
+            <span>Play text automatically while typing</span>
+          </label>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Typing Trainer</h2>
+            <span class="badge">Real-time</span>
+          </div>
+
+          <label class="field-group">
+            <span>Start typing here</span>
+            <textarea id="typingInput" placeholder="Begin typing the practice text here." rows="6" onpaste="return false" ondrop="return false" aria-label="Typing input area"></textarea>
+            <small>Paste is disabled so you type the text manually.</small>
+          </label>
+
+          <div class="metrics-grid" aria-live="polite">
+            <div class="metric-card">
+              <strong id="wpmValue">0</strong>
+              <span>WPM</span>
+            </div>
+            <div class="metric-card">
+              <strong id="accuracyValue">100%</strong>
+              <span>Accuracy</span>
+            </div>
+            <div class="metric-card">
+              <strong id="elapsedValue">00:00</strong>
+              <span>Time</span>
+            </div>
+            <div class="metric-card">
+              <strong id="mistakesValue">0</strong>
+              <span>Mistakes</span>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button id="resetButton" type="button" class="secondary">Reset session</button>
+          </div>
+        </section>
+
+        <section class="panel full-width">
+          <div class="panel-head">
+            <h2>How it works</h2>
+          </div>
+          <ul class="instructions">
+            <li>Select a language, then generate or type your own practice text.</li>
+            <li>Type in the practice area — paste is blocked so you can train honestly.</li>
+            <li>Toggle "Play text automatically" to hear the passage while typing.</li>
+            <li>Watch speed, accuracy, and mistake count update in real time.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
