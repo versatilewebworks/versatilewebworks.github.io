@@ -5,19 +5,22 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
-  --primary: #1e293b;
 }
 
 body {
-  background-color: var(--background);
+  background: var(--background);
   color: var(--foreground);
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
 }
 
-.legal-card {
-  @apply bg-white border border-slate-200 shadow-sm rounded-xl transition-all duration-200 hover:shadow-md;
+/* Custom Scrollbar for a premium feel */
+::-webkit-scrollbar {
+  width: 6px;
 }
-
-.btn-primary {
-  @apply bg-slate-900 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-slate-800 active:scale-95 transition-all flex items-center justify-center gap-2;
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
 }
