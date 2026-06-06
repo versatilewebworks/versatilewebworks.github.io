@@ -277,18 +277,29 @@ export default function Home() {
                 </select>
               </label>
 
-              <label className="grid gap-2 text-sm font-medium text-slate-700">
-                Source
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value as any)}
-                  className="rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
-                >
-                  <option value="business">Business</option>
-                  <option value="technology">Technology</option>
-                  <option value="sports">Sports</option>
-                </select>
-              </label>
+              <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+                <label className="grid gap-2 text-sm font-medium text-slate-700">
+                  Source
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value as any)}
+                    className="rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
+                  >
+                    <option value="business">Business</option>
+                    <option value="technology">Technology</option>
+                    <option value="sports">Sports</option>
+                  </select>
+                </label>
+                <div className="flex flex-col justify-end">
+                  <button
+                    type="button"
+                    onClick={handleGenerate}
+                    className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
+                  >
+                    Generate
+                  </button>
+                </div>
+              </div>
 
               <label className="grid gap-2 text-sm font-medium text-slate-700">
                 Practice text
@@ -307,63 +318,53 @@ export default function Home() {
                 </div>
               </label>
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3">
                 <button
                   type="button"
-                  onClick={handleGenerate}
-                  className="rounded-3xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
+                  onClick={handlePlay}
+                  className="rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
                 >
-                  Generate practice text
+                  Listen to text
                 </button>
+                <select
+                  value={selectedVoice ?? ''}
+                  onChange={(e) => setSelectedVoice(e.target.value || null)}
+                  className="rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none"
+                >
+                  <option value="">Default voice</option>
+                  {voices.map((v) => (
+                    <option key={v.voiceURI || v.name} value={v.name}>{v.name} {v.lang}</option>
+                  ))}
+                </select>
+              </div>
 
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={handlePlay}
-                      className="rounded-3xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
-                    >
-                      Listen to text
-                    </button>
-                    <select
-                      value={selectedVoice ?? ''}
-                      onChange={(e) => setSelectedVoice(e.target.value || null)}
-                      className="rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none"
-                    >
-                      <option value="">Default voice</option>
-                      {voices.map((v) => (
-                        <option key={v.voiceURI || v.name} value={v.name}>{v.name} {v.lang}</option>
-                      ))}
-                    </select>
-                  </div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <label className="w-14 text-xs font-medium text-slate-600">Speed</label>
+                  <input
+                    type="range"
+                    min="0.5"
+                    max="2"
+                    step="0.1"
+                    value={rate}
+                    onChange={(e) => setRate(Number(e.target.value))}
+                    className="flex-1"
+                  />
+                  <span className="w-10 text-right text-xs text-slate-600">{rate.toFixed(1)}x</span>
+                </div>
 
-                  <div className="flex items-center gap-3">
-                    <label className="text-xs text-slate-600">Speed</label>
-                    <input
-                      type="range"
-                      min="0.5"
-                      max="2"
-                      step="0.1"
-                      value={rate}
-                      onChange={(e) => setRate(Number(e.target.value))}
-                      className="w-full"
-                    />
-                    <span className="text-xs">{rate.toFixed(1)}x</span>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <label className="text-xs text-slate-600">Pitch</label>
-                    <input
-                      type="range"
-                      min="0.5"
-                      max="2"
-                      step="0.1"
-                      value={pitch}
-                      onChange={(e) => setPitch(Number(e.target.value))}
-                      className="w-full"
-                    />
-                    <span className="text-xs">{pitch.toFixed(1)}</span>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <label className="w-14 text-xs font-medium text-slate-600">Pitch</label>
+                  <input
+                    type="range"
+                    min="0.5"
+                    max="2"
+                    step="0.1"
+                    value={pitch}
+                    onChange={(e) => setPitch(Number(e.target.value))}
+                    className="flex-1"
+                  />
+                  <span className="w-10 text-right text-xs text-slate-600">{pitch.toFixed(1)}</span>
                 </div>
               </div>
               <label className="flex items-center gap-3 rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-700">
