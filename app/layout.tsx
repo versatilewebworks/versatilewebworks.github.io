@@ -1,22 +1,30 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"],
+  variable: '--font-inter',
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: '--font-serif',
+});
 
 export const metadata: Metadata = {
-  title: "Legal & Document Utility Suite",
-  description: "Tools for law firms, typists, and legal professionals.",
+  title: "LexAuto | Legal Utility Suite",
+  description: "Professional Grade Legal Automation Tools",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
