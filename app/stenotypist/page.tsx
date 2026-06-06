@@ -2,8 +2,6 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { signInWithPopup, signOut, type User } from 'firebase/auth';
-import { auth, googleProvider } from '../../lib/firebase';
 
 const practiceTexts: Record<string, string[]> = {
   'en-US': [
@@ -55,9 +53,6 @@ export default function Home() {
   const [accuracy, setAccuracy] = useState(100);
   const [seconds, setSeconds] = useState(0);
   const [completed, setCompleted] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [authLoading, setAuthLoading] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
   const timerRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
   const voiceLockedRef = useRef(false);
@@ -70,18 +65,6 @@ export default function Home() {
         window.clearInterval(timerRef.current);
       }
     };
-  }, []);
-
-  useEffect(() => {
-    if (!auth) {
-      return;
-    }
-
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      setUser(currentUser);
-    });
-
-    return unsubscribe;
   }, []);
 
   useEffect(() => {
@@ -251,41 +234,6 @@ export default function Home() {
     setSourceText(newText);
   };
 
-  const handleSignIn = async () => {
-    if (!auth) {
-      setAuthError('Firebase is not configured. Please add your Firebase settings.');
-      return;
-    }
-
-    setAuthLoading(true);
-    setAuthError(null);
-
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error: any) {
-      setAuthError(error?.message ?? 'Unable to sign in with Google.');
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const handleSignOut = async () => {
-    if (!auth) {
-      return;
-    }
-
-    setAuthLoading(true);
-    setAuthError(null);
-
-    try {
-      await signOut(auth);
-    } catch (error: any) {
-      setAuthError(error?.message ?? 'Unable to sign out.');
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950 px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
@@ -302,29 +250,11 @@ export default function Home() {
               >
                 ← Back to home
               </Link>
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-sm text-slate-600">
-                  {user ? `Signed in as ${user.displayName ?? user.email}` : 'Sign in or sign up with Google to personalize your practice.'}
-                </span>
-                <button
-                  type="button"
-                  onClick={user ? handleSignOut : handleSignIn}
-                  disabled={authLoading}
-                  className="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400"
-                >
-                  {user ? 'Sign Out' : 'Sign in with Google'}
-                </button>
               </div>
-            </div>
           </div>
           <p className="mt-3 max-w-2xl text-slate-600 sm:text-lg">
             A professional practice studio that helps stenotypists build speed and precision with dynamic text, live metrics, and optional audio playback.
           </p>
-          {authError ? (
-            <div className="mt-4 rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700">
-              {authError}
-            </div>
-          ) : null}
         </section>
 
         <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
