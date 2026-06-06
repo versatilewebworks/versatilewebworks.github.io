@@ -18,8 +18,19 @@ const hasFirebaseConfig = Boolean(
   firebaseConfig.appId
 );
 
-const app = typeof window !== 'undefined' && hasFirebaseConfig ? (!getApps().length ? initializeApp(firebaseConfig) : getApps()[0]) : null;
-const auth = app ? getAuth(app) : null;
+const getFirebaseApp = () => {
+  if (typeof window === 'undefined' || !hasFirebaseConfig) {
+    return null;
+  }
+
+  return getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+};
+
+const getFirebaseAuth = () => {
+  const app = getFirebaseApp();
+  return app ? getAuth(app) : null;
+};
+
 const googleProvider = new GoogleAuthProvider();
 
-export { auth, googleProvider };
+export { getFirebaseAuth, googleProvider };

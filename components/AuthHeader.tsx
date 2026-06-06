@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { signInWithPopup, signOut, onAuthStateChanged, type User } from 'firebase/auth';
-import { auth, googleProvider } from '../lib/firebase';
+import { getFirebaseAuth, googleProvider } from '../lib/firebase';
 
 export default function AuthHeader() {
   const [user, setUser] = useState<User | null>(null);
@@ -11,6 +11,7 @@ export default function AuthHeader() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const auth = getFirebaseAuth();
     if (!auth) {
       return;
     }
@@ -23,6 +24,7 @@ export default function AuthHeader() {
   }, []);
 
   const handleSignIn = async () => {
+    const auth = getFirebaseAuth();
     if (!auth) {
       setError('Firebase is not configured. Please add your Firebase settings to .env.local.');
       return;
@@ -41,6 +43,7 @@ export default function AuthHeader() {
   };
 
   const handleSignOut = async () => {
+    const auth = getFirebaseAuth();
     if (!auth) {
       return;
     }
