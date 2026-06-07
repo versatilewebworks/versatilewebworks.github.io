@@ -1,0 +1,10 @@
+{
+  "homepage": {
+    "title": "Versatile Web Works",
+    "featured": "Featured Tools & Posts"
+  },
+  "tools": {
+    "related": "Related Developer Tools",
+    "jsonFormatter": "JSON Formatter"
+  }
+}

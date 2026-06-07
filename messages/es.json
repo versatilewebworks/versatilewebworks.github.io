@@ -1,0 +1,10 @@
+{
+  "homepage": {
+    "title": "Versátil Web Works",
+    "featured": "Herramientas y publicaciones destacadas"
+  },
+  "tools": {
+    "related": "Herramientas para desarrolladores relacionadas",
+    "jsonFormatter": "Formateador JSON"
+  }
+}

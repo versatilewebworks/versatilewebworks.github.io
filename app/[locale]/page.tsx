@@ -1,0 +1,30 @@
+import BlogCarousel from '../../components/BlogCarousel';
+import { posts } from '../../lib/posts';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { createTranslator } from 'next-intl/server';
+
+type Props = { params: { locale: string } };
+
+export default async function Page({ params }: Props) {
+  // Load messages for server-side translation
+  const messages = (await import(`../../messages/${params.locale}.json`)).default;
+  const t = createTranslator({ locale: params.locale, messages });
+
+  // Server component: choose featured or latest posts on the server
+  const featured = posts.slice(0, 3);
+
+  return (
+    <main className="p-6">
+      <header className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">{t('homepage.title')}</h1>
+        <LanguageSwitcher />
+      </header>
+
+      <section>
+        <h2 className="text-xl font-semibold mb-4">{t('homepage.featured')}</h2>
+        {/* Passing serializable data (posts) to the Client Carousel */}
+        <BlogCarousel posts={featured} />
+      </section>
+    </main>
+  );
+}
