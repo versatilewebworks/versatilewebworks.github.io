@@ -2,13 +2,13 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAqrPpDQagx3nea1kJeQdz4qp_VaXWllqU",
-  authDomain: "authentication-2a697.firebaseapp.com",
-  projectId: "authentication-2a697",
-  storageBucket: "authentication-2a697.appspot.com",
-  messagingSenderId: "672346373984",
-  appId: "1:672346373984:web:a918528e84683c89d56805",
-  measurementId: "G-17EZ2GBP9E",
+  apiKey: 'AIzaSyAQrPpDQagx3nea1kJeQdz4qp_VaXWllqU',
+  authDomain: 'authentication-2a697.firebaseapp.com',
+  projectId: 'authentication-2a697',
+  storageBucket: 'authentication-2a697.firebasestorage.app',
+  messagingSenderId: '672346373984',
+  appId: '1:672346373984:web:a918528e84683c89d56805',
+  measurementId: 'G-17EZ2GBP9E',
 };
 
 const hasFirebaseConfig = Boolean(
@@ -18,24 +18,11 @@ const hasFirebaseConfig = Boolean(
   firebaseConfig.appId
 );
 
-const getFirebaseApp = () => {
-  if (typeof window === 'undefined' || !hasFirebaseConfig) {
-    return null;
-  }
+const firebaseApp = typeof window !== 'undefined' && hasFirebaseConfig
+  ? (getApps().length ? getApps()[0] : initializeApp(firebaseConfig))
+  : null;
 
-  return getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-};
+const auth = firebaseApp ? getAuth(firebaseApp) : null;
+const googleProvider = hasFirebaseConfig ? new GoogleAuthProvider() : null;
 
-const getFirebaseAuth = () => {
-  const app = getFirebaseApp();
-  return app ? getAuth(app) : null;
-};
-
-const getGoogleProvider = () => {
-  if (!hasFirebaseConfig) {
-    return null;
-  }
-  return new GoogleAuthProvider();
-};
-
-export { getFirebaseAuth, getGoogleProvider, hasFirebaseConfig };
+export { auth, googleProvider, hasFirebaseConfig };

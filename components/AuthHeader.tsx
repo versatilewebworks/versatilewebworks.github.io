@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { signInWithPopup, signOut, onAuthStateChanged, type User } from 'firebase/auth';
-import { getFirebaseAuth, getGoogleProvider, hasFirebaseConfig } from '../lib/firebase';
+import { auth, googleProvider, hasFirebaseConfig } from '../lib/firebase';
 
 export default function AuthHeader() {
   const [user, setUser] = useState<User | null>(null);
@@ -12,7 +12,6 @@ export default function AuthHeader() {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const auth = getFirebaseAuth();
     if (!auth) {
       return;
     }
@@ -50,18 +49,8 @@ export default function AuthHeader() {
   }, []);
 
   const handleSignIn = async () => {
-    if (!hasFirebaseConfig) {
-      const msg = 'Firebase is not configured. Please add your Firebase settings to .env.local.';
-      console.error(msg);
-      alert(msg);
-      return;
-    }
-
-    const auth = getFirebaseAuth();
-    const googleProvider = getGoogleProvider();
-    
-    if (!auth || !googleProvider) {
-      const msg = 'Unable to initialize authentication. Please refresh the page.';
+    if (!hasFirebaseConfig || !auth || !googleProvider) {
+      const msg = 'Unable to initialize Firebase authentication. Please verify your Firebase settings.';
       console.error(msg);
       alert(msg);
       return;
@@ -81,7 +70,6 @@ export default function AuthHeader() {
   };
 
   const handleSignOut = async () => {
-    const auth = getFirebaseAuth();
     if (!auth) {
       return;
     }
