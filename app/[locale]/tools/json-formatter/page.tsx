@@ -1,12 +1,12 @@
 import BlogCarousel from '../../../../components/BlogCarousel';
 import { posts } from '../../../../lib/posts';
 import LanguageSwitcher from '../../../../components/LanguageSwitcher';
-import { createTranslator } from 'next-intl/server';
+import { createTranslator, loadMessages } from '../../../../lib/i18n';
 
 type Props = { params: { locale: string } };
 
 export default async function ToolPage({ params }: Props) {
-  const messages = (await import(`../../../../messages/${params.locale}.json`)).default;
+  const messages = await loadMessages(params.locale);
   const t = createTranslator({ locale: params.locale, messages });
 
   // Filter posts by tag/category for contextual relevance

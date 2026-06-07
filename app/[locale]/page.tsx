@@ -1,13 +1,13 @@
 import BlogCarousel from '../../components/BlogCarousel';
 import { posts } from '../../lib/posts';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
-import { createTranslator } from 'next-intl/server';
+import { createTranslator, loadMessages } from '../../lib/i18n';
 
 type Props = { params: { locale: string } };
 
 export default async function Page({ params }: Props) {
   // Load messages for server-side translation
-  const messages = (await import(`../../messages/${params.locale}.json`)).default;
+  const messages = await loadMessages(params.locale);
   const t = createTranslator({ locale: params.locale, messages });
 
   // Server component: choose featured or latest posts on the server
