@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const baseUrl = process.env.SITE_URL ?? 'https://www.versatilewebworks.com';
+const baseUrl = process.env.SITE_URL ?? 'https://www.versatilewebworks.online';
 
 export function GET() {
   const rules = `User-agent: *
