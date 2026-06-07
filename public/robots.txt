@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/private
+Disallow: /admin
+Sitemap: https://www.versatilewebworks.online/sitemap.xml
