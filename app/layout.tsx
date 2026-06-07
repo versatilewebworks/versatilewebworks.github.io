@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import AuthHeader from '../components/AuthHeader';
+import Footer from '../components/Footer';
 
 export const metadata: Metadata = {
   title: 'Versatile WebWorks | Productivity Utilities',
@@ -12,7 +13,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <AuthHeader />
-        {children}
+        <div className="flex min-h-screen flex-col">
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );
