@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { promises as fs } from 'fs';
 import path from 'path';
 
-const baseUrl = process.env.SITE_URL ?? 'https://www.versatilewebworks.com';
+const baseUrl = process.env.SITE_URL ?? 'https://www.versatilewebworks.online';
 
 async function getBlogSlugs(): Promise<string[]> {
   const blogPath = path.join(process.cwd(), 'app', 'blog');
