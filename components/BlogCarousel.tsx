@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { BlogPost } from '../types/blog';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 type Props = {
   posts: BlogPost[];
@@ -40,6 +41,12 @@ export default function BlogCarousel({ posts, intervalMs = 5000 }: Props) {
 
   if (!posts || posts.length === 0) return null;
 
+  // derive locale prefix from current pathname when available (client)
+  const pathname = usePathname?.() ?? '';
+  const firstSegment = pathname.split('/')[1];
+  const SUPPORTED = ['en', 'es', 'ur'];
+  const localePrefix = SUPPORTED.includes(firstSegment) ? `/${firstSegment}` : '';
+
   return (
     <section
       className="relative w-full max-w-4xl mx-auto"
@@ -58,7 +65,7 @@ export default function BlogCarousel({ posts, intervalMs = 5000 }: Props) {
             <div className="h-full w-full bg-gray-50 flex flex-col md:flex-row items-stretch">
               <div className="md:w-1/2 p-6 flex flex-col justify-center">
                 <h3 className="text-xl md:text-2xl font-semibold mb-2">
-                  <Link href={`/${post.slug}`} className="hover:underline">
+                  <Link href={`${localePrefix}/${post.slug}`} className="hover:underline">
                     <span className="notranslate">{post.title}</span>
                   </Link>
                 </h3>

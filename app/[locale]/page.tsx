@@ -17,17 +17,49 @@ export default async function Page({ params }: Props) {
       {/* Hero section */}
       <section className="bg-gradient-to-r from-sky-50 to-white py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl mb-6">
             <h1 className="text-4xl font-extrabold leading-tight text-slate-900 mb-4">{t('homepage.title')}</h1>
             <p className="text-lg text-slate-600 mb-6">A collection of fast, serverless utilities and developer tools to speed up your workflow.</p>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/tools/json-formatter" className="rounded-md bg-slate-900 px-5 py-3 text-white font-semibold hover:bg-slate-700">
-                <span className="notranslate">Get Started</span>
+          </div>
+
+          {/* Tools showcase - up to 5 utilities */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {posts.slice(0, 5).map((p) => (
+              <Link
+                key={p.id}
+                href={`/${params.locale}/tools/${p.slug}`}
+                className="group block rounded-lg overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition"
+              >
+                {p.coverImage ? (
+                  <div className="h-36 w-full overflow-hidden bg-gray-100">
+                    <img src={p.coverImage} alt={p.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform" />
+                  </div>
+                ) : (
+                  <div className="h-36 w-full bg-gray-100 flex items-center justify-center text-slate-500">No image</div>
+                )}
+
+                <div className="p-4">
+                  <h3 className="text-sm font-semibold mb-1 notranslate">{p.title}</h3>
+                  <p className="text-xs text-gray-500">{p.tags.join(' • ')}</p>
+                </div>
               </Link>
-              <Link href="/blog" className="rounded-md border border-slate-200 px-5 py-3 text-slate-700 font-medium hover:bg-slate-50">
-                Read Blog
-              </Link>
-            </div>
+            ))}
+
+            {/* Stenotypist quick access card */}
+            <Link
+              href={`/${params.locale}/stenotypist`}
+              className="group block rounded-lg overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition"
+            >
+              <div className="h-36 w-full overflow-hidden bg-gradient-to-r from-indigo-600 to-sky-500 flex items-center justify-center text-white">
+                <div className="text-center">
+                  <h3 className="text-lg font-semibold">Stenotypist</h3>
+                  <p className="text-xs opacity-90">Practice Studio</p>
+                </div>
+              </div>
+              <div className="p-4">
+                <p className="text-sm text-slate-700">Type training and real-time metrics</p>
+              </div>
+            </Link>
           </div>
         </div>
       </section>

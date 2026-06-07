@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { signInWithPopup, signOut, onAuthStateChanged, type User } from 'firebase/auth';
 import { auth, googleProvider, hasFirebaseConfig } from '../lib/firebase';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -11,6 +12,15 @@ export default function AuthHeader() {
   const [loading, setLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const pathname = usePathname() ?? '';
+  const firstSegment = pathname.split('/')[1];
+  const SUPPORTED_LOCALES = ['en', 'es', 'ur'];
+  const localePrefix = SUPPORTED_LOCALES.includes(firstSegment) ? `/${firstSegment}` : '';
+  const homeHref = localePrefix || '/';
+  const blogHref = localePrefix ? `${localePrefix}/blog` : '/blog';
+  const toolsHref = localePrefix ? `${localePrefix}/tools/json-formatter` : '/tools/json-formatter';
+  const stenoHref = localePrefix ? `${localePrefix}/stenotypist` : '/stenotypist';
 
   useEffect(() => {
     if (!auth) {
@@ -89,14 +99,20 @@ export default function AuthHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 px-4 py-4 backdrop-blur-sm shadow-sm sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em] text-slate-700 transition hover:text-slate-900">
+        <Link href={homeHref} className="text-sm font-semibold uppercase tracking-[0.28em] text-slate-700 transition hover:text-slate-900">
           Versatile WebWorks
         </Link>
 
         <div className="relative flex flex-wrap items-center gap-3">
           <LanguageSwitcher />
-          <Link href="/blog" className="text-sm text-slate-600 transition hover:text-slate-900">
+          <Link href={blogHref} className="text-sm text-slate-600 transition hover:text-slate-900">
             Blog
+          </Link>
+          <Link href={toolsHref} className="text-sm text-slate-600 transition hover:text-slate-900">
+            Tools
+          </Link>
+          <Link href={stenoHref} className="text-sm text-slate-600 transition hover:text-slate-900">
+            Stenotypist
           </Link>
 
           {user ? (
