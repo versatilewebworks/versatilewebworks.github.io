@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { signInWithPopup, signOut, onAuthStateChanged, type User } from 'firebase/auth';
-import { getFirebaseAuth, googleProvider } from '../lib/firebase';
+import { getFirebaseAuth, getGoogleProvider, hasFirebaseConfig } from '../lib/firebase';
 
 export default function AuthHeader() {
   const [user, setUser] = useState<User | null>(null);
@@ -50,9 +50,20 @@ export default function AuthHeader() {
   }, []);
 
   const handleSignIn = async () => {
+    if (!hasFirebaseConfig) {
+      const msg = 'Firebase is not configured. Please add your Firebase settings to .env.local.';
+      console.error(msg);
+      alert(msg);
+      return;
+    }
+
     const auth = getFirebaseAuth();
-    if (!auth) {
-      console.error('Firebase is not configured. Please add your Firebase settings to .env.local.');
+    const googleProvider = getGoogleProvider();
+    
+    if (!auth || !googleProvider) {
+      const msg = 'Unable to initialize authentication. Please refresh the page.';
+      console.error(msg);
+      alert(msg);
       return;
     }
 
@@ -61,7 +72,9 @@ export default function AuthHeader() {
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (err: any) {
-      console.error(err?.message ?? 'Unable to sign in with Google.');
+      const errorMsg = err?.message ?? 'Unable to sign in with Google.';
+      console.error('Sign-in error:', errorMsg);
+      alert(`Sign-in failed: ${errorMsg}`);
     } finally {
       setLoading(false);
     }

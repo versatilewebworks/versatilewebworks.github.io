@@ -31,6 +31,11 @@ const getFirebaseAuth = () => {
   return app ? getAuth(app) : null;
 };
 
-const googleProvider = new GoogleAuthProvider();
+const getGoogleProvider = () => {
+  if (!hasFirebaseConfig) {
+    return null;
+  }
+  return new GoogleAuthProvider();
+};
 
-export { getFirebaseAuth, googleProvider };
+export { getFirebaseAuth, getGoogleProvider, hasFirebaseConfig };
