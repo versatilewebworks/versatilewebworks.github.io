@@ -40,6 +40,15 @@ export default function AuthHeader() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, []);
+
   const handleSignIn = async () => {
     const auth = getFirebaseAuth();
     if (!auth) {
@@ -113,7 +122,17 @@ export default function AuthHeader() {
               </button>
 
               {menuOpen ? (
-                <div className="absolute right-0 z-50 mt-3 w-80 rounded-3xl border border-slate-200 bg-white p-5 shadow-xl">
+                <div className="absolute right-4 left-4 mt-3 z-50 rounded-3xl border border-slate-200 bg-white p-5 shadow-xl sm:right-0 sm:left-auto sm:w-80">
+                  <button
+                    type="button"
+                    onClick={() => setMenuOpen(false)}
+                    aria-label="Close sign-in"
+                    className="absolute right-3 top-3 rounded-md p-1 text-slate-500 hover:bg-slate-100 sm:hidden"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor">
+                      <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
                   <p className="text-sm font-semibold text-slate-900">Sign in or sign up</p>
                   <p className="mt-2 text-sm leading-6 text-slate-600">
                     Sign in to access personalized session data.
@@ -127,14 +146,14 @@ export default function AuthHeader() {
                     Continue with Gmail
                   </button>
                   <div className="mt-3 flex items-center justify-center gap-3 text-slate-500">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-700">
-                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-[#1877F2] text-white">
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="white" aria-hidden="true">
                         <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.333v21.334C0 23.403.597 24 1.325 24H12.82v-9.294H9.692V11.08h3.128V8.41c0-3.1 1.893-4.788 4.658-4.788 1.325 0 2.464.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.312h3.587l-.467 3.626h-3.12V24h6.116C23.403 24 24 23.403 24 22.667V1.333C24 .597 23.403 0 22.675 0z" />
                       </svg>
                     </span>
-                    <span className="flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-700">
-                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
-                        <path d="M12 0C5.371 0 0 5.373 0 12c0 5.127 3.163 9.497 7.675 11.244.56.104.765-.243.765-.54 0-.267-.01-1.154-.016-2.087-3.123.68-3.783-1.5-3.783-1.5-.51-1.294-1.246-1.639-1.246-1.639-1.018-.697.078-.683.078-.683 1.126.08 1.72 1.157 1.72 1.157 1.001 1.715 2.626 1.22 3.266.933.103-.73.392-1.22.713-1.5-2.494-.284-5.115-1.247-5.115-5.55 0-1.225.438-2.227 1.157-3.012-.116-.286-.502-1.435.11-2.99 0 0 .944-.303 3.096 1.153A10.8 10.8 0 0 1 12 5.84c.958.004 1.923.13 2.828.38 2.149-1.456 3.09-1.153 3.09-1.153.613 1.555.227 2.704.112 2.99.72.785 1.157 1.787 1.157 3.012 0 4.314-2.625 5.262-5.126 5.54.403.347.76 1.032.76 2.081 0 1.503-.014 2.716-.014 3.088 0 .3.203.648.772.538C20.84 21.495 24 17.127 24 12c0-6.627-5.373-12-12-12z" />
+                    <span className="flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-[#26A5E4] text-white">
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="white" aria-hidden="true">
+                        <path d="M21.639 3.353a1.5 1.5 0 0 0-1.618-.28L3 10.5l5.5 1.833L13 9l8.639-5.647a1.5 1.5 0 0 0-.001-0zM13 12l-4.5 3L3 10.5 13 12z" />
                       </svg>
                     </span>
                     <span className="text-xs text-slate-500">Facebook and Telegram login coming soon</span>
