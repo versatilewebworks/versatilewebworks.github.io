@@ -145,17 +145,13 @@ export default function AuthHeader() {
                   >
                     Continue with Gmail
                   </button>
-                  <div className="mt-4 flex items-center justify-center gap-4">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200 text-slate-950 transition hover:text-[#1877F2]">
-                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                      </svg>
-                    </span>
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200 text-slate-950 transition hover:text-[#26A5E4]">
-                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
-                        <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.82-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295-.39 0-.32-.145-.451-.462l-2.109-6.94c-.13-.43.066-.646.438-.646l.991-.045 7.761-6.285c.33-.3.638-.143.4.261l-6.273 8.826-.026.405 3.86 3.514c.145.145.27.266.27.266l3.068-9.478c.13-.43.066-.646-.437-.646l-.995-.044z" />
-                      </svg>
-                    </span>
+                  <div className="mt-4 flex items-center justify-center gap-6">
+                    <svg viewBox="0 0 24 24" className="h-8 w-8 text-slate-600 transition hover:text-[#1877F2]" fill="currentColor" aria-hidden="true">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" className="h-8 w-8 text-slate-600 transition hover:text-[#26A5E4]" fill="currentColor" aria-hidden="true">
+                      <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.82-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295-.39 0-.32-.145-.451-.462l-2.109-6.94c-.13-.43.066-.646.438-.646l.991-.045 7.761-6.285c.33-.3.638-.143.4.261l-6.273 8.826-.026.405 3.86 3.514c.145.145.27.266.27.266l3.068-9.478c.13-.43.066-.646-.437-.646l-.995-.044z" />
+                    </svg>
                   </div>
                 </div>
               ) : null}
