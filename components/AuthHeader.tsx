@@ -146,13 +146,13 @@ export default function AuthHeader() {
                     Continue with Gmail
                   </button>
                   <div className="mt-4 flex items-center justify-center gap-4">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1877F2] shadow-sm">
-                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="white" aria-hidden="true">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200 text-slate-950">
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
                         <path d="M17.525 9.25h-2.44c-.187 0-.447.112-.447.562v1.338h2.887l-.375 2.872h-2.512V24H12.87v-9.978H10.7V11.01h2.17V8.936c0-2.148 1.308-3.32 3.213-3.32.93 0 1.73.07 1.962.1v2.277z" />
                       </svg>
                     </span>
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#26A5E4] shadow-sm">
-                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="white" aria-hidden="true">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200 text-slate-950">
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
                         <path d="M21.176 3.356a1.17 1.17 0 0 0-1.306-.114L3.78 9.513a.57.57 0 0 0 .04 1.06l3.714 1.612 1.57 4.706a.57.57 0 0 0 .942.246l1.96-1.905 3.359 2.475a.57.57 0 0 0 .93-.37l1.107-9.21a1.17 1.17 0 0 0-.416-.967zM9.748 13.22l-.874-2.62 7.007-4.2-5.354 6.82z" />
                       </svg>
                     </span>
