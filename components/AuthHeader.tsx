@@ -145,18 +145,17 @@ export default function AuthHeader() {
                   >
                     Continue with Gmail
                   </button>
-                  <div className="mt-3 flex items-center justify-center gap-3 text-slate-500">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-[#1877F2] text-white">
+                  <div className="mt-4 flex items-center justify-center gap-4">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1877F2] shadow-sm">
                       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="white" aria-hidden="true">
-                        <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.333v21.334C0 23.403.597 24 1.325 24H12.82v-9.294H9.692V11.08h3.128V8.41c0-3.1 1.893-4.788 4.658-4.788 1.325 0 2.464.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.312h3.587l-.467 3.626h-3.12V24h6.116C23.403 24 24 23.403 24 22.667V1.333C24 .597 23.403 0 22.675 0z" />
+                        <path d="M17.525 9.25h-2.44c-.187 0-.447.112-.447.562v1.338h2.887l-.375 2.872h-2.512V24H12.87v-9.978H10.7V11.01h2.17V8.936c0-2.148 1.308-3.32 3.213-3.32.93 0 1.73.07 1.962.1v2.277z" />
                       </svg>
                     </span>
-                    <span className="flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-[#26A5E4] text-white">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#26A5E4] shadow-sm">
                       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="white" aria-hidden="true">
-                        <path d="M21.639 3.353a1.5 1.5 0 0 0-1.618-.28L3 10.5l5.5 1.833L13 9l8.639-5.647a1.5 1.5 0 0 0-.001-0zM13 12l-4.5 3L3 10.5 13 12z" />
+                        <path d="M21.176 3.356a1.17 1.17 0 0 0-1.306-.114L3.78 9.513a.57.57 0 0 0 .04 1.06l3.714 1.612 1.57 4.706a.57.57 0 0 0 .942.246l1.96-1.905 3.359 2.475a.57.57 0 0 0 .93-.37l1.107-9.21a1.17 1.17 0 0 0-.416-.967zM9.748 13.22l-.874-2.62 7.007-4.2-5.354 6.82z" />
                       </svg>
                     </span>
-                    <span className="text-xs text-slate-500">Facebook and Telegram login coming soon</span>
                   </div>
                 </div>
               ) : null}
