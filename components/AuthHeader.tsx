@@ -1,9 +1,10 @@
-'use client';
+ 'use client';
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { signInWithPopup, signOut, onAuthStateChanged, type User } from 'firebase/auth';
 import { auth, googleProvider, hasFirebaseConfig } from '../lib/firebase';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function AuthHeader() {
   const [user, setUser] = useState<User | null>(null);
@@ -93,6 +94,7 @@ export default function AuthHeader() {
         </Link>
 
         <div className="relative flex flex-wrap items-center gap-3">
+          <LanguageSwitcher />
           <Link href="/blog" className="text-sm text-slate-600 transition hover:text-slate-900">
             Blog
           </Link>
